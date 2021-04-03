@@ -1,0 +1,34 @@
+{
+    "name": "therealmal",
+    "description": "Your best autoclicker.",
+    "version": "0.0.0",
+    "version_name": "0.0.0",
+
+    "author": "@23therealmal23",
+
+    "browser_action": {
+        "default_popup": "auth/auth.html",
+        "default_icon": "assets/icon_static_dark.png"
+    },
+    "background":{
+        "scripts":[
+            "background.js"
+        ],
+        "persistent": true
+    },
+    "permissions":[
+        "https://*/*",
+        "http://*/*",
+        "webRequestBlocking",
+        "webRequest",
+        "system.storage",
+        "tabs"
+    ],
+    "icons": {
+        "16":  "assets/icon_static_dark.png",
+        "48":  "assets/icon_static_dark.png",
+        "128": "assets/icon_static_dark.png",
+        "256": "assets/icon_static_dark.png"
+    },
+    "manifest_version": 2
+}
