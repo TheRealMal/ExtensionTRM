@@ -11,7 +11,7 @@ let region = window.location.hostname.split('.')[window.location.hostname.split(
 if (region == "com"){
     region = window.location.pathname.split('/')[1];
 }
-chrome.storage.local.get('adidasSize', function(storage){
+chrome.storage.local.get('adidas', function(storage){
     fetch('https://' + window.location.hostname + '/api/products/' + productID + '/availability', {
         headers: {
             'content-type': 'application/json'
@@ -21,7 +21,7 @@ chrome.storage.local.get('adidasSize', function(storage){
         return response.json();
     })
     .then(function (data){
-        switch (storage.adidasSize.var){
+        switch (storage.adidas.size.var){
             case 'smallest':
                 for (size of data["variation_list"]){
                     if (size["availability"] > 0){
@@ -52,7 +52,7 @@ chrome.storage.local.get('adidasSize', function(storage){
                 break;
             default:
                 for (size of data["variation_list"]){
-                    if ((size["sku"] === productID+'_'+storage.adidasSize.var) && size["availability"] > 0){
+                    if ((size["sku"] === productID+'_'+storage.adidas.size.var) && size["availability"] > 0){
                         let atcURI = 'https://' + window.location.hostname + '/on/demandware.store/Sites-adidas-'+region.toUpperCase()+'-Site/'+region+'-'+region.toUpperCase()+'/Cart-MiniAddProduct?layer=Add%20To%20Bag%20overlay&pid='+size["sku"]+'&Quantity=1&masterPid='+productID+'add-to-cart-button=';
                         fetch(atcURI).then(function (response){
                             if (response.status == 200){

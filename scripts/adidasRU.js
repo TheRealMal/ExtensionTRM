@@ -84,6 +84,11 @@ function autofillTextFields(fields){
 
 function autofillYoomoney(){
     autofillTextFields(afIFrameFields);
+    chrome.storage.local.get('adidas', function(storage){
+        if (storage.adidas.aco && getEl("button[type='submit']")){
+            getEl("button[type='submit']").click();
+        };
+    });
 }
 
 
@@ -95,6 +100,11 @@ const callback = function(mutationsList, observer){
                     if (x.tagName == "FORM" || x.tagName == "MAIN"){
                         autofillTextFields(afTextFields);
                         autofillCheckboxes(getEls("input[type='checkbox']"));
+                        chrome.storage.local.get('adidas', function(storage){
+                            if (storage.adidas.aco && getEl("button[data-auto-id='review-and-pay-button']")){
+                                getEl("button[data-auto-id='review-and-pay-button']").click();
+                            }
+                        });
                         break;
                     }
                 }
@@ -103,6 +113,11 @@ const callback = function(mutationsList, observer){
                 if (mutation.target.tagName == "BODY"){
                     autofillTextFields(afTextFields);
                     autofillCheckboxes(getEls("input[type='checkbox']"));
+                    chrome.storage.local.get('adidas', function(storage){
+                        if (storage.adidas.aco && getEl("button[data-auto-id='review-and-pay-button']")){
+                            getEl("button[data-auto-id='review-and-pay-button']").click();
+                        }
+                    });
                     break;
                 }
         }
@@ -112,10 +127,14 @@ const callback = function(mutationsList, observer){
 const observer = new MutationObserver(callback);
 
 window.onload = () => {
-    autofillYoomoney();
-    observer.observe(document.body, {
-        attributes: true,
-        childList: true,
-        subtree: true
+    chrome.storage.local.get('adidas', function(storage){
+        if (storage.adidas.status && storage.adidas.af){
+            autofillYoomoney();
+            observer.observe(document.body, {
+                attributes: true,
+                childList: true,
+                subtree: true
+            });
+        };
     });
 };

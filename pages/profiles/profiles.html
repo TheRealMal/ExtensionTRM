@@ -3,15 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <title>therealmal</title>
+    <script src="../jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-mask-plugin@1.14.16/dist/jquery.mask.min.js"></script>
     <script src="profiles.js"></script>
     <link rel="stylesheet" href="../styles.css">
     <script src="../shared.js"></script>
+    <style>
+        .profileLabel {
+            font-size: 15px;
+        }
+        #profileDropdown {
+            display: table;
+            margin: 0 auto;
+        }
+        input#cardDate {
+            width: 50px;
+        }
+        input#cardCVC {
+            width: 50px;
+        }
+        #profilesBox {
+            margin-left: 10px;
+            padding-bottom: 10px;
+        }
+        .saveButton {
+            display: table;
+            margin: 10px auto 0px auto;
+            text-align: center;
+            width: 120px;
+            height: 25px;
+            color: white;
+            background-color: rgb(110, 0, 130);
+            border: 1.5px solid rgba(111, 0, 130, 0);
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .saveButton:hover {
+            outline: 0;
+            background-color: rgb(11, 11, 11);
+            border: 1.5px solid rgb(110, 0, 130);
+            cursor: pointer;
+        }
+        .saveButton:focus {
+            outline: 0;
+            background-color: rgb(110, 0, 130);
+        }
+    </style>
 </head>
 <body>
     <div id="header">
         <a href="../main/main.html" class="headerButttons">Scripts</a>
         <a href="../settings/settings.html" class="headerButttons">Settings</a>
         <a href="../profiles/profiles.html" class="headerButttons">Profiles</a>
+    </div>
+    <div id="body">
+        <div id="profilesBox">
+            <select id="profileDropdown" class="trmFormSelect">
+                <option selected>Create new profile</option>
+            </select>
+            <br><div class="inputBox">
+                <label for="profileName" class="profileLabel">Profile Name</label>
+                <br><input id="profileName" placeholder="EXAMPLE" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="name" class="profileLabel">Name</label>
+                <br><input id="name" placeholder="Ivanov Ivan" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="country" class="profileLabel">Country</label>
+                <br><input id="country" placeholder="Russia" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="state" class="profileLabel">State</label>
+                <br><input id="state" placeholder="Moscow Region" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="city" class="profileLabel">City</label>
+                <br><input id="city" placeholder="Moscow" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="address1" class="profileLabel">Address1</label>
+                <br><input id="address1" placeholder="Kuznetsky most" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="address2" class="profileLabel">Address2</label>
+                <br><input id="address2" placeholder="6/3" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="zip" class="profileLabel">ZIP</label>
+                <br><input id="zip" placeholder="123123" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="phone" class="profileLabel">Phone</label>
+                <br><input id="phone" placeholder="7 999 123 1488" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="email" class="profileLabel">Email</label>
+                <br><input id="email" placeholder="example@gmail.com" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="cardNumber" class="profileLabel">Card Number</label>
+                <br><input id="cardNumber" type="tel" placeholder="4321 1234 4321 1234" pattern="\d*" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="cardDate" class="profileLabel">Card Date</label>
+                <br><input id="cardDate" placeholder="01/23" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="cardCVC" class="profileLabel">CVC</label>
+                <br><input id="cardCVC" placeholder="000" class="customInput">
+            </div>
+            <br><div class="inputBox">
+                <label for="extra" class="profileLabel">Extra Field</label>
+                <br><input id="extra" placeholder="Some info" class="customInput">
+            </div>
+            <button class="saveButton" id="profileSave">Create</button>
+        </div>
     </div>
 </body>
 </html>

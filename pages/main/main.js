@@ -25,18 +25,47 @@ document.addEventListener("DOMContentLoaded", function(){
         'smallest': 'smallest',
         'largest': 'largest'
     };
-    /* Adidas turn on/off */
+    chrome.storage.local.get('profiles', function(storage){
+        for (profile in storage.profiles){
+            let opt = document.createElement('option');
+            opt.value = profile;
+            opt.innerHTML = profile;
+            document.querySelector('select#adidasProfile').appendChild(opt);
+        }
+    });
+    let adidasOpt = {};
     chrome.storage.local.get('adidas', function(storage){
-        document.querySelector('#adidasSwitch').checked = storage.adidas;
+        document.querySelector('input#adidasSwitch').checked = storage.adidas.status;
+        document.querySelector('select#adidasSizes').value = storage.adidas.size.UK;
+        document.querySelector('select#adidasProfile').value = storage.adidas.profile;
+        document.querySelector('input#adidasATCcheckbox').checked = storage.adidas.atc;
+        document.querySelector('input#adidasACOcheckbox').checked = storage.adidas.aco;
+        document.querySelector('input#adidasAFcheckbox').checked = storage.adidas.af;
+        adidasOpt = storage.adidas;
     });
-    document.querySelector("#adidasSwitch").addEventListener('change', function(){
-        chrome.storage.local.set({'adidas': this.checked}, function(){});
+    document.querySelector("input#adidasSwitch").addEventListener('change', function(){
+        adidasOpt.status = this.checked;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-    /* Adidas choose size */
-    chrome.storage.local.get('adidasSize', function(storage){
-        document.querySelector('select#adidasSizes').value = storage.adidasSize.UK;
+    document.querySelector("select#adidasSizes").addEventListener('change', function(){
+        adidasOpt.size = {};
+        adidasOpt.size.UK = this.value, adidasOpt.size.var = adidasSizesTab[this.value];
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-    document.querySelector("#adidasSizes").addEventListener('change', function(){
-        chrome.storage.local.set({'adidasSize': {'UK': this.value, 'var': adidasSizesTab[this.value]}}, function(){});
+    document.querySelector("select#adidasProfile").addEventListener('change', function(){
+        adidasOpt.profile = this.value;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    document.querySelector("input#adidasATCcheckbox").addEventListener('change', function(){
+        adidasOpt.atc = this.checked;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    document.querySelector("input#adidasACOcheckbox").addEventListener('change', function(){
+        adidasOpt.aco = this.checked;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    document.querySelector("input#adidasAFcheckbox").addEventListener('change', function(){
+        adidasOpt.af = this.checked;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
 });

@@ -10,13 +10,21 @@
             margin: 5px 0 0 5px;
         }
         #adidasSizes {
+            width: 170px;
             margin-top: 2px;
+        }
+        #adidasProfile {
+            width: 170px;
+            margin-left: 30px;
         }
         label#adidas {
             margin-left: 5px;
         }
         label[for="adidasSwitch"]{
             margin-top: 5px;
+        }
+        #adidasATCcheckbox {
+            margin-top: 10px;
         }
     </style>
     <script src="../shared.js"></script>
@@ -58,6 +66,12 @@
                 <option value="13 UK">13 UK</option>
                 <option value="13.5 UK">13.5 UK</option>
             </select>
+            <select id="adidasProfile" class="trmFormSelect">
+                <option disabled selected>Choose profile</option>
+            </select>
+            <br><input type="checkbox" class="checkboxTRM" id="adidasATCcheckbox"/><label class="checkboxLabel" for="adidasATCcheckbox">Add to cart</label>
+            <br><input type="checkbox" class="checkboxTRM" id="adidasACOcheckbox"/><label class="checkboxLabel" for="adidasACOcheckbox">Autocheckout</label>
+            <br><input type="checkbox" class="checkboxTRM" id="adidasAFcheckbox"/><label class="checkboxLabel" for="adidasAFcheckbox">Autofill</label>
         </div>
     </div>
 </body>

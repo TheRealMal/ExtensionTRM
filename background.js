@@ -50,7 +50,7 @@ function sendWebhook(status, site, item, size){
 chrome.webRequest.onCompleted.addListener(
     function (requestDetails){
         chrome.storage.local.get('adidas', function(storage){
-            if (storage.adidas){
+            if (storage.adidas.status && storage.adidas.atc){
                 chrome.tabs.get(requestDetails.tabId, function(tab) { 
                     if (tab.url.indexOf('/cart') == -1 && requestDetails.statusCode == 200){
                         chrome.tabs.executeScript(requestDetails.tabId, {code: "var productID = '"+requestDetails.url.split('/')[5]+"';"}, function(){
