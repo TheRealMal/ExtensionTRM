@@ -1,8 +1,8 @@
 {
     "name": "therealmal",
-    "description": "Your best autoclicker.",
-    "version": "0.0.0",
-    "version_name": "0.0.0",
+    "description": "Secret developments of Russian scientists.",
+    "version": "0.0.1",
+    "version_name": "0.0.1",
 
     "author": "@23therealmal23",
 
@@ -31,5 +31,36 @@
         "256": "assets/icon_static_dark.png"
     },
     "manifest_version": 2,
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/*"
+            ],
+            "js": [
+                "assets/notifications/iziToast.min.js",
+                "scripts/adidasTR.js"
+            ],
+            "css": [
+                "assets/notifications/iziToast.min.css"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://www.adidas.ru/delivery",
+                "https://yoomoney.ru/checkout/*"
+            ],
+            "js": [
+                "assets/notifications/iziToast.min.js",
+                "scripts/adidasRU.js"
+            ],
+            "css": [
+                "assets/notifications/iziToast.min.css"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        }
+    ],
     "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'"
 }

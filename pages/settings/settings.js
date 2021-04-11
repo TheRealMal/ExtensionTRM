@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded", function(){
                                 "value": "Test Item"
                             },
                             {
+                                "name": "Size",
+                                "value": "N/A"
+                            },
+                            {
                                 "name": "Profile",
                                 "value": "||Test Profile||"
                             },

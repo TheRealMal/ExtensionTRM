@@ -20,7 +20,10 @@ document.addEventListener("DOMContentLoaded", function(){
         '12 UK':'700',
         '12.5 UK':'710',
         '13 UK':'720',
-        '13,5 UK':'730'
+        '13,5 UK':'730',
+        'random': 'random',
+        'smallest': 'smallest',
+        'largest': 'largest'
     };
     /* Adidas turn on/off */
     chrome.storage.local.get('adidas', function(storage){

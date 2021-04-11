@@ -1,10 +1,3 @@
-function getEl(querySelector){
-    return document.querySelector(querySelector);
-};
-function getEls(querySelector){
-    return document.querySelectorAll(querySelector);
-};
-
 var profile = {
     "firstName": "Roman",
     "lastName": "Malyutin",
@@ -16,12 +9,19 @@ var profile = {
     "phone": "5498230612",
     "email": "therealmal23@gmail.com",
     "passport": "11111111111",
-    "cardNumber": "1234123412341234",
+    "cardNumber": "4377 7200 0020 6011",
     "cardName": "ROMAN MALYUTIN",
     "cardCVC": "123",
     "cardMonth": "11",
     "cardYear": "2023"
 }
+
+function getEl(querySelector){
+    return document.querySelector(querySelector);
+};
+function getEls(querySelector){
+    return document.querySelectorAll(querySelector);
+};
 
 let afTextFields = {
     "#dwfrm_shipping_shiptoaddress_shippingAddress_firstName": profile.firstName,
@@ -34,9 +34,7 @@ let afTextFields = {
     "#dwfrm_shipping_billTypeIndividual_billTypeIndividual": profile.passport,
     "input[data-encrypted-name='number']": profile.cardNumber,
     "input[data-encrypted-name='holderName']": profile.cardName,
-    "input[data-encrypted-name='cvc']": profile.cardCVC
-};
-let afSelectFields = {
+    "input[data-encrypted-name='cvc']": profile.cardCVC,
     "#dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince": profile.state,
     "#dwfrm_shipping_shiptoaddress_shippingAddress_city": profile.city,
     "input[data-encrypted-name='expiryMonth']": profile.cardMonth,
@@ -46,8 +44,10 @@ let afSelectFields = {
 function fillField(id, value){
 	let element = getEl(id);
 	if (element && element.value !== value){
+        element.focus();
         element.value = value;
-        element.dispatchEvent(new Event('change'));
+        element.dispatchEvent(new Event('change', { bubbles: true }));
+        element.blur();
 	};
 };
 
@@ -72,29 +72,10 @@ function autofillTextFields(fields) {
 function autofill(){
     autofillTextFields(afTextFields);
     autofillCheckboxes(getEls("input[type='checkbox']"));
-    // Shipping details
-    if (getEl("#dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince") && getEl("#dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince").value !== afSelectFields["#dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince"]){
-        getEls("div.materialize-element")[5].click();
-        getEl("div.dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince > [data-value='"+afSelectFields["#dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince"]+"']").click();
-    };
-    if (getEl("#dwfrm_shipping_shiptoaddress_shippingAddress_city") && getEl("#dwfrm_shipping_shiptoaddress_shippingAddress_city").value !== afSelectFields["#dwfrm_shipping_shiptoaddress_shippingAddress_city"]){
-        getEls("div.materialize-element")[6].click();
-        getEl("div.dwfrm_shipping_shiptoaddress_shippingAddress_city > [data-value='"+afSelectFields["#dwfrm_shipping_shiptoaddress_shippingAddress_city"]+"']").click();
-    };
     if (getEl("[name='dwfrm_shipping_submitshiptoaddress']")){
         getEl("[name='dwfrm_shipping_submitshiptoaddress']").click();
     };
-
-    // Card details
-    if (getEl("input[data-encrypted-name='expiryMonth']") && getEl("input[data-encrypted-name='expiryMonth']").value !== afSelectFields["input[data-encrypted-name='expiryMonth']"]){
-        getEl("fieldset > .exp-date > .month > div > div").click();
-        getEl("fieldset > .exp-date > .month > div > div > .materialize-select-list > [data-value='"+afSelectFields["input[data-encrypted-name='expiryMonth']"]+"']").click();
-    };
-    if (getEl("input[data-encrypted-name='expiryYear']") && getEl("input[data-encrypted-name='expiryYear']").value !== afSelectFields["input[data-encrypted-name='expiryYear']"]){
-        getEl("fieldset > .exp-date > .year > div > div").click();
-        getEl("fieldset > .exp-date > .year > div > div > .materialize-select-list > [data-value='"+afSelectFields["input[data-encrypted-name='expiryYear']"]+"']").click();
-        //alert("Ready to checkout")
-    };
+    //https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/COSummary2-ShowConfirmation
 };
 
 autofill();
@@ -111,8 +92,16 @@ const callback = function(mutationsList, observer) {
 
 const observer = new MutationObserver(callback);
 
-observer.observe(document.body, {
-    attributes: false,
-    childList: true,
-    subtree: true
-})
+window.onload = () => {
+    observer.observe(document.body, {
+        attributes: false,
+        childList: true,
+        subtree: true
+    })
+    iziToast.show({
+        title: '[TRM EXT]',
+        message: 'Filled adidas info',
+        position: 'topRight',
+        color: 'blue'
+    });
+};
