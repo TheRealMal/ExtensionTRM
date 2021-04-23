@@ -5,6 +5,22 @@ document.addEventListener("DOMContentLoaded", function(){
             document.querySelector('input#webhookInput').value = storage.discordWebhook;
         }
     });
+    document.querySelector("#exportSettings").addEventListener('click', function(){
+        chrome.storage.local.get(null, function(storage){
+            navigator.clipboard.writeText(JSON.stringify(storage));
+        });
+    });
+    document.querySelector("#importSettings").addEventListener('click', function(){
+        if (document.querySelector("#settingsInput").style.display !== "none" && document.querySelector("#settingsInput").style.display !== ""){
+            chrome.storage.local.set(JSON.parse(document.querySelector("#settingsInput").value), function(){
+                document.querySelector("#settingsInput").style.display = "none";
+            });
+        }
+        else {
+            document.querySelector("#settingsInput").value = "";
+            document.querySelector("#settingsInput").style.display = "table";
+        }
+    });
     document.querySelector("#discordSave").addEventListener('click', function(){
         chrome.storage.local.set({'discordWebhook': document.querySelector("input#webhookInput").value}, function(){});
         fetch(document.querySelector("input#webhookInput").value,
@@ -17,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     "content": null,
                     "embeds": [{
                         "title": "Successfully checked out!",
-                        "color": 7209090,
+                        "color": 9240739,
                         "fields": [
                             {
                                 "name": "Site",

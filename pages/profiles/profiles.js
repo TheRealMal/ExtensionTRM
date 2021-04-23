@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(){
     $('#cardNumber').mask("0000 0000 0000 0000");
     $('#cardDate').mask("00/00");
     $('#cardCVC').mask("000");
-    $('#phone').mask("## 000 000 0000", {reverse: true});
+    $('#phone').mask("##(000)000-00-00", {reverse: true});
     document.querySelector("#profileDropdown").addEventListener("change", function(){
         let profileName = this.value;
         if (profileName !== "Create new profile") {

@@ -30,14 +30,19 @@ document.addEventListener("DOMContentLoaded", function(){
             let opt = document.createElement('option');
             opt.value = profile;
             opt.innerHTML = profile;
-            document.querySelector('select#adidasProfile').appendChild(opt);
+            document.querySelector('select#adidasProfileRU').appendChild(opt);
+            opt = document.createElement('option');
+            opt.value = profile;
+            opt.innerHTML = profile;
+            document.querySelector('select#adidasProfileTR').appendChild(opt);
         }
     });
     let adidasOpt = {};
     chrome.storage.local.get('adidas', function(storage){
         document.querySelector('input#adidasSwitch').checked = storage.adidas.status;
         document.querySelector('select#adidasSizes').value = storage.adidas.size.UK;
-        document.querySelector('select#adidasProfile').value = storage.adidas.profile;
+        document.querySelector('select#adidasProfileRU').value = storage.adidas.profile["ru"];
+        document.querySelector('select#adidasProfileTR').value = storage.adidas.profile["tr"];
         document.querySelector('input#adidasATCcheckbox').checked = storage.adidas.atc;
         document.querySelector('input#adidasACOcheckbox').checked = storage.adidas.aco;
         document.querySelector('input#adidasAFcheckbox').checked = storage.adidas.af;
@@ -52,8 +57,20 @@ document.addEventListener("DOMContentLoaded", function(){
         adidasOpt.size.UK = this.value, adidasOpt.size.var = adidasSizesTab[this.value];
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-    document.querySelector("select#adidasProfile").addEventListener('change', function(){
-        adidasOpt.profile = this.value;
+    document.querySelector("select#adidasProfileRU").addEventListener('change', function(){
+        if (typeof adidasOpt.profile !== "object"){
+            adidasOpt.profile = {};
+        }
+        adidasOpt.profile.ru = this.value;
+        console.log(adidasOpt.profile);
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    document.querySelector("select#adidasProfileTR").addEventListener('change', function(){
+        if (typeof adidasOpt.profile !== "object"){
+            adidasOpt.profile = {};
+        }
+        adidasOpt.profile.tr = this.value;
+        console.log(adidasOpt.profile);
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
     document.querySelector("input#adidasATCcheckbox").addEventListener('change', function(){
