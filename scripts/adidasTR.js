@@ -96,8 +96,11 @@ chrome.storage.local.get(null, function(storage){
         autofillCheckboxes(getEls("input[type='checkbox']"));
         autofillCardDate();
         chrome.storage.local.get('adidas', function(storage){
-            if (storage.adidas.aco && getEl("button[type='submit']")){
-                getEl("button[type='submit']").click();
+            if (storage.adidas.aco && getEl("button[name='dwfrm_shipping_submitshiptoaddress']")){
+                getEl("button[name='dwfrm_shipping_submitshiptoaddress']").click();
+            }
+            if (storage.adidas.aco && getEl("div.payment-submit > button")){
+                getEl("div.payment-submit > button").click();
             }
         });
         //https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/COSummary2-ShowConfirmation
@@ -111,8 +114,7 @@ chrome.storage.local.get(null, function(storage){
             switch (mutation.type){
                 case "childList":
                     for (x of mutation.addedNodes){
-                        if (x.tagName != "SPAN"){
-                            console.log(x);
+                        if (x.tagName != "SPAN" && x.tagName != "DIV" && x.tagName != "A" && x.tagName != "UL"){
                             autofill();
                             break;
                         }
@@ -120,7 +122,6 @@ chrome.storage.local.get(null, function(storage){
                     break;
                 case "attributes":
                     if (mutation.target.tagName != "SPAN" && mutation.target.tagName != "DIV" && mutation.target.tagName != "A" && mutation.target.tagName != "INPUT" && mutation.target.tagName != "UL"){
-                        console.log(mutation.target);
                         autofill();
                         break;
                     }

@@ -6,37 +6,51 @@
     <script src="main.js"></script>
     <link rel="stylesheet" href="../styles.css">
     <style>
-        #adidasSizesDiv {
-            margin: 5px 0 0 5px;
+        .siteBox{
+            display: table;
         }
+        .siteHead {
+            display: table;
+        }
+        .siteHead > .siteName {
+            margin-left:  5px;
+        }
+        .siteBody {
+            display: inline-block;
+        }
+        .checkboxBlock {
+            height: 20px;
+        }
+
         #adidasSizes {
-            width: 170px;
-            margin-top: 2px;
-            position: absolute;
+            width: 180px;
+            margin-right: 20px;
         }
         #adidasProfilesBox {
-            position: absolute;
-            left: 180px;
-            width: 170px;
-            margin-left: 25px;
+            display: table;
+            float: right;
         }
         #adidasProfileTRBox {
             margin-top: 10px;
         }
-        label#adidas {
-            margin-left: 5px;
-        }
-        label[for="adidasSwitch"]{
-            margin-top: 5px;
-        }
-        #adidasATCcheckbox {
-            margin-top: 30px;
-        }
-        .siteBox{
-            display: table;
+        #adidasCheckboxBox {
+            margin-top: 10px
         }
         #km20 {
-            margin: 10px 0 0 0;
+            margin-top: 20px;
+        }
+        #km20 > .siteBody {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+        #km20Sizes {
+            width: 180px;
+        }
+        #km20checkboxBox {
+            margin-top: 10px;
         }
     </style>
     <script src="../shared.js"></script>
@@ -49,9 +63,11 @@
     </div>
     <div id="body">
         <div class="siteBox" id="adidas">
-            <input type="checkbox" class="switch" id="adidasSwitch"/><label class="switchLabel" for="adidasSwitch">Toggle</label>
-            <label id="adidas">adidas</label>
-            <div id="adidasSizesDiv">
+            <div class="siteHead">
+                <input type="checkbox" class="switch" id="adidasSwitch"/><label class="switchLabel" for="adidasSwitch">Toggle</label>
+                <label class="siteName" id="adidas">adidas</label>
+            </div>
+            <div class="siteBody">
                 <select id="adidasSizes" class="trmFormSelect">
                     <option disabled selected>Choose size</option>
                     <option value="smallest">Smallest</option>
@@ -81,67 +97,86 @@
                 </select>
                 <div id="adidasProfilesBox">
                     <div id="adidasProfileRUBox">
-                        <span style="color: white;">RU</span>
+                        <span style="color: white;">RU</span><br>
                         <select id="adidasProfileRU" class="trmFormSelect">
                             <option disabled selected>Choose profile</option>
                         </select>
                     </div>
                     <div id="adidasProfileTRBox">
-                        <span style="color: white;">TR</span>
+                        <span style="color: white;">TR</span><br>
                         <select id="adidasProfileTR" class="trmFormSelect">
                             <option disabled selected>Choose profile</option>
                         </select>
                     </div>
                 </div>
-                <br><input type="checkbox" class="checkboxTRM" id="adidasATCcheckbox"/><label class="checkboxLabel" for="adidasATCcheckbox">Add to cart</label>
-                <br><input type="checkbox" class="checkboxTRM" id="adidasACOcheckbox"/><label class="checkboxLabel" for="adidasACOcheckbox">Autocheckout</label>
-                <br><input type="checkbox" class="checkboxTRM" id="adidasAFcheckbox"/><label class="checkboxLabel" for="adidasAFcheckbox">Autofill</label>
+                <div id="adidasCheckboxBox">
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="adidasATCcheckbox"/><label class="checkboxLabel" for="adidasATCcheckbox">Add to cart</label>
+                    </div>
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="adidasACOcheckbox"/><label class="checkboxLabel" for="adidasACOcheckbox">Autocheckout</label>
+                    </div>
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="adidasAFcheckbox"/><label class="checkboxLabel" for="adidasAFcheckbox">Autofill</label>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="siteBox" id="km20">
-            <input type="checkbox" class="switch" id="km20Switch"/><label class="switchLabel" for="kmSwitch">Toggle</label>
-            <label id="km20">KM20</label>
-            <br>
-            <span style="color: white;">SIZES</span>
-            <br>
-            <select id="km20Sizes" class="trmFormSelect">
-                <option disabled selected>Choose size</option>
-                <option value="smallest">Smallest</option>
-                <option value="largest">Largest</option>
-                <option value="random">Random</option>
-                <option value="3.5">3.5 UK / US</option>
-                <option value="4">4 UK / US</option>
-                <option value="4.5">4.5 UK / US</option>
-                <option value="5">5 UK / US</option>
-                <option value="5.5">5.5 UK / US</option>
-                <option value="6">6 UK / US</option>
-                <option value="6.5">6.5 UK / US</option>
-                <option value="7">7 UK / US</option>
-                <option value="7.5">7.5 UK / US</option>
-                <option value="8">8 UK / US</option>
-                <option value="8.5">8.5 UK / US</option>
-                <option value="9">9 UK / US</option>
-                <option value="9.5">9.5 UK / US</option>
-                <option value="10">10 UK / US</option>
-                <option value="10.5">10.5 UK / US</option>
-                <option value="11">11 UK / US</option>
-                <option value="11.5">11.5 UK / US</option>
-                <option value="12">12 UK / US</option>
-                <option value="12.5">12.5 UK / US</option>
-                <option value="13">13 UK / US</option>
-                <option value="13.5">13.5 UK / US</option>
-            </select>
-            <div id="km20ProfilesBox">
+            <div class="siteHead">
+                <input type="checkbox" class="switch" id="km20Switch"/><label class="switchLabel" for="kmSwitch">Toggle</label>
+                <label class="siteName" id="km20">KM20</label>
+            </div>
+            <div class="siteBody">
+                <div id="km20SizesBox">
+                    <span style="color: white;">SIZES</span>
+                    <br>
+                    <select id="km20Sizes" class="trmFormSelect">
+                        <option disabled selected>Choose size</option>
+                        <option value="smallest">Smallest</option>
+                        <option value="largest">Largest</option>
+                        <option value="random">Random</option>
+                        <option value="3.5">3.5 UK / US</option>
+                        <option value="4">4 UK / US</option>
+                        <option value="4.5">4.5 UK / US</option>
+                        <option value="5">5 UK / US</option>
+                        <option value="5.5">5.5 UK / US</option>
+                        <option value="6">6 UK / US</option>
+                        <option value="6.5">6.5 UK / US</option>
+                        <option value="7">7 UK / US</option>
+                        <option value="7.5">7.5 UK / US</option>
+                        <option value="8">8 UK / US</option>
+                        <option value="8.5">8.5 UK / US</option>
+                        <option value="9">9 UK / US</option>
+                        <option value="9.5">9.5 UK / US</option>
+                        <option value="10">10 UK / US</option>
+                        <option value="10.5">10.5 UK / US</option>
+                        <option value="11">11 UK / US</option>
+                        <option value="11.5">11.5 UK / US</option>
+                        <option value="12">12 UK / US</option>
+                        <option value="12.5">12.5 UK / US</option>
+                        <option value="13">13 UK / US</option>
+                        <option value="13.5">13.5 UK / US</option>
+                    </select>
+                </div>
                 <div id="km20ProfileBox">
                     <span style="color: white;">PROFILE</span><br>
                     <select id="km20Profile" class="trmFormSelect">
                         <option disabled selected>Choose profile</option>
                     </select>
                 </div>
+                <div id="km20checkboxBox">
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="km20ATCcheckbox"/><label class="checkboxLabel" for="km20ATCcheckbox">ATC Loop</label>
+                    </div>
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="km20ACOcheckbox"/><label class="checkboxLabel" for="km20ACOcheckbox">Autocheckout</label>
+                    </div>
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="km20AFcheckbox"/><label class="checkboxLabel" for="km20AFcheckbox">Autofill</label>
+                    </div>
+                </div>
             </div>
-            <br><input type="checkbox" class="checkboxTRM" id="adidasATCcheckbox"/><label class="checkboxLabel" for="adidasATCcheckbox">ATC Loop</label>
-            <br><input type="checkbox" class="checkboxTRM" id="adidasACOcheckbox"/><label class="checkboxLabel" for="adidasACOcheckbox">Autocheckout</label>
-            <br><input type="checkbox" class="checkboxTRM" id="adidasAFcheckbox"/><label class="checkboxLabel" for="adidasAFcheckbox">Autofill</label>
         </div>
     </div>
 </body>

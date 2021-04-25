@@ -37,6 +37,9 @@
             "matches": [
                 "https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/*"
             ],
+            "exclude_globs":  [
+                "https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/Cart-Show"
+            ],
             "js": [
                 "assets/notifications/iziToast.min.js",
                 "scripts/adidasTR.js"
