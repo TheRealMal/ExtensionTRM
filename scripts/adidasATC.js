@@ -88,7 +88,7 @@ chrome.storage.local.get('adidas', function(storage){
                             }])
                         }).then(function (response){
                             if (response.status == 200){
-                                chrome.runtime.sendMessage({message: "publicSuccess", status: "Successfully added to cart!", site: window.location.hostname, item: productID, size: size["size"]  + " [Smallest]"}, function(response){});
+                                chrome.runtime.sendMessage({message: "publicSuccess", status: "Successfully added to cart!", site: window.location.hostname, item: productID, size: size["size"]  + " [Largest]"}, function(response){});
                                 window.location = adidasDomains[region];
                             }
                         });
