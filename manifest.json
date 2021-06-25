@@ -1,8 +1,8 @@
 {
     "name": "therealmal",
     "description": "Secret developments of Russian scientists.",
-    "version": "0.0.2",
-    "version_name": "0.0.2",
+    "version": "0.0.3",
+    "version_name": "0.0.3",
 
     "author": "@23therealmal23",
 
@@ -35,7 +35,10 @@
     "content_scripts": [
         {
             "matches": [
-                "https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/*"
+                "https://www.adidas.com.tr/tr/delivery",
+                "https://www.adidas.com.tr/en/delivery",
+                "https://www.adidas.com.tr/tr/payment",
+                "https://www.adidas.com.tr/en/payment"
             ],
             "exclude_globs":  [
                 "https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/Cart-Show"
@@ -52,12 +55,55 @@
         },
         {
             "matches": [
+                "https://www.adidas.co.th/en/delivery",
+                "https://www.adidas.co.th/en/payment"
+            ],
+            "js": [
+                "assets/notifications/iziToast.min.js",
+                "scripts/adidasTH.js"
+            ],
+            "css": [
+                "assets/notifications/iziToast.min.css"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
                 "https://www.adidas.ru/delivery",
                 "https://yoomoney.ru/checkout/*"
             ],
             "js": [
                 "assets/notifications/iziToast.min.js",
                 "scripts/adidasRU.js"
+            ],
+            "css": [
+                "assets/notifications/iziToast.min.css"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://www.lamoda.ru/p/*"
+            ],
+            "js": [
+                "assets/notifications/iziToast.min.js",
+                "scripts/lamoda.js"
+            ],
+            "css": [
+                "assets/notifications/iziToast.min.css"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://shoppingcart.aliexpress.ru/*"
+            ],
+            "js": [
+                "assets/notifications/iziToast.min.js",
+                "scripts/aliexpress.js"
             ],
             "css": [
                 "assets/notifications/iziToast.min.css"

@@ -1,10 +1,10 @@
-const adidasDomains = {
+adidasDomains = {
     'ru' : 'https://www.adidas.ru/delivery',
     'uk' : 'https://www.adidas.co.uk/delivery',
     'us' : 'https://www.adidas.com/us/delivery',
-    'th' : 'https://www.adidas.co.th/on/demandware.store/Sites-adidas-TH-Site/th_TH/COShipping-Show',
-    'tr' : 'https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/COShipping-Show',
-    'au' : 'https://www.adidas.com.au/on/demandware.store/Sites-adidas-AU-Site/en_AU/COShipping-Show'
+    'th' : 'https://www.adidas.co.th/en/delivery',
+    'tr' : 'https://www.adidas.com.tr/tr/delivery',
+    'au' : 'https://www.adidas.com.au/delivery'
 };
 
 let region = window.location.hostname.split('.')[window.location.hostname.split('.').length-1];
@@ -125,7 +125,7 @@ chrome.storage.local.get('adidas', function(storage){
                             }])
                         }).then(function (response){
                             if (response.status == 200){
-                                chrome.runtime.sendMessage({message: "publicSuccess", status: "Successfully added to cart!", site: window.location.hostname, item: productID, size: size["size"]  + " [Smallest]"}, function(response){});
+                                chrome.runtime.sendMessage({message: "publicSuccess", status: "Successfully added to cart!", site: window.location.hostname, item: productID, size: size["size"]}, function(response){});
                                 window.location = adidasDomains[region];
                             }
                         });

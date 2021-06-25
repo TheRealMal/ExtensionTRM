@@ -33,19 +33,21 @@ chrome.storage.local.get(null, function(storage){
     };
 
     let afTextFields = {
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_firstName": profile.firstName,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_lastName": profile.lastName,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_address1": profile.address1,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_address2": profile.address2,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_postalCode": profile.zip,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_phone": profile.phone,
-        "#dwfrm_shipping_email_emailAddress": profile.email,
-        "#dwfrm_shipping_billTypeIndividual_billTypeIndividual": profile.passport,
-        "input[data-encrypted-name='number']": profile.cardNumber,
-        "input[data-encrypted-name='holderName']": profile.cardName,
-        "input[data-encrypted-name='cvc']": profile.cardCVC,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_countyProvince": profile.state,
-        "#dwfrm_shipping_shiptoaddress_shippingAddress_city": profile.city,
+        "select[name='shippingAddress.stateCode']": profile.state,
+        "#shippingAddress-firstName": profile.firstName,
+        "#shippingAddress-lastName": profile.lastName,
+        "#shippingAddress-address1": profile.address1,
+        "#shippingAddress-address2": profile.address2,
+        "#shippingAddress-zipcode": profile.zip,
+        "#shippingAddress-phoneNumber": profile.phone,
+        "#shippingAddress-emailAddress": profile.email,
+        "#billingAddress-documentValue": profile.passport,
+        "#card-number": profile.cardNumber,
+        "#name": profile.cardName,
+        "#expiryDate": profile.cardMonth + profile.cardYear.slice(-2),
+        "#security-number-field": profile.cardCVC,
+        "select[name='additionalBillingAddress.documentTypeId']": "Bireysel",
+        "select[name='shippingAddress.city']": profile.city
     };
 
     function fillField(id, value){
@@ -80,30 +82,18 @@ chrome.storage.local.get(null, function(storage){
             sendNotification('Filled adidas info');
         };
     };
-    function autofillCardDate(){
-        if (getEl("input[data-encrypted-name='expiryMonth']") && getEl("input[data-encrypted-name='expiryMonth']").value !== profile.cardMonth){
-            getEl("fieldset > .exp-date > .month > div > div").click();
-            getEl("fieldset > .exp-date > .month > div > div > .materialize-select-list > [data-value='"+profile.cardMonth+"']").click();
-        };
-        if (getEl("input[data-encrypted-name='expiryYear']") && getEl("input[data-encrypted-name='expiryYear']").value !== profile.cardYear){
-            getEl("fieldset > .exp-date > .year > div > div").click();
-            getEl("fieldset > .exp-date > .year > div > div > .materialize-select-list > [data-value='"+profile.cardYear+"']").click();
-        };
-    }
 
     function autofill(){
         autofillTextFields(afTextFields);
         autofillCheckboxes(getEls("input[type='checkbox']"));
-        autofillCardDate();
         chrome.storage.local.get('adidas', function(storage){
-            if (storage.adidas.aco && getEl("button[name='dwfrm_shipping_submitshiptoaddress']")){
-                getEl("button[name='dwfrm_shipping_submitshiptoaddress']").click();
+            if (storage.adidas.aco && getEl("button[data-auto-id='review-and-pay-button']")){
+                getEl("button[data-auto-id='review-and-pay-button']").click();
             }
-            if (storage.adidas.aco && getEl("div.payment-submit > button")){
-                getEl("div.payment-submit > button").click();
+            if (storage.adidas.aco && getEl("button[data-auto-id='place-order-button']")){
+                getEl("button[data-auto-id='place-order-button']").click();
             }
         });
-        //https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/COSummary2-ShowConfirmation
     };
 
     autofill();
@@ -113,18 +103,23 @@ chrome.storage.local.get(null, function(storage){
         for (mutation of mutationsList){
             switch (mutation.type){
                 case "childList":
-                    for (x of mutation.addedNodes){
-                        if (x.tagName != "SPAN" && x.tagName != "DIV" && x.tagName != "A" && x.tagName != "UL"){
-                            autofill();
-                            break;
-                        }
-                    }
-                    break;
-                case "attributes":
-                    if (mutation.target.tagName != "SPAN" && mutation.target.tagName != "DIV" && mutation.target.tagName != "A" && mutation.target.tagName != "INPUT" && mutation.target.tagName != "UL"){
+                    if (mutation.target.tagName == "FORM" || mutation.target.tagName == "MAIN" || mutation.target.tagName == "BODY"){
                         autofill();
                         break;
                     }
+                    for (x of mutation.addedNodes){
+                        if (x.tagName == "INPUT"){
+                            autofill();
+                            break;
+                        }
+                    }                  
+                    break;
+                case "attributes":
+                    if (mutation.target.tagName == "FORM" || mutation.target.tagName == "MAIN"){
+                        autofill();
+                        break;
+                    }
+                    break;
             }
         }
     };

@@ -74,7 +74,9 @@ chrome.webRequest.onCompleted.addListener(
             "https://www.adidas.co.uk/api/products/*/availability",
             "https://www.adidas.com/api/products/*/availability?sitePath=us",
             "https://www.adidas.co.th/api/products/*/availability?sitePath=th",
+            "https://www.adidas.co.th/api/products/*/availability?sitePath=en",
             "https://www.adidas.com.tr/api/products/*/availability?sitePath=tr",
+            "https://www.adidas.com.tr/api/products/*/availability?sitePath=en",
             "https://www.adidas.com.au/api/products/*/availability",
         ]
     }
@@ -106,7 +108,7 @@ chrome.webRequest.onCompleted.addListener(
     },
     {
         urls: [
-            "https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/COSummary2-ShowConfirmation"
+            "https://www.adidas.com.tr/tr/confirmation"
         ]
     }
 );

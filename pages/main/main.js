@@ -35,6 +35,14 @@ document.addEventListener("DOMContentLoaded", function(){
             opt.value = profile;
             opt.innerHTML = profile;
             document.querySelector('select#adidasProfileTR').appendChild(opt);
+            opt = document.createElement('option');
+            opt.value = profile;
+            opt.innerHTML = profile;
+            document.querySelector('select#adidasProfileTH').appendChild(opt);
+            opt = document.createElement('option');
+            opt.value = profile;
+            opt.innerHTML = profile;
+            document.querySelector('select#lamodaProfile').appendChild(opt);
         }
     });
     let adidasOpt = {};
@@ -43,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function(){
         document.querySelector('select#adidasSizes').value = storage.adidas.size.UK;
         document.querySelector('select#adidasProfileRU').value = storage.adidas.profile["ru"];
         document.querySelector('select#adidasProfileTR').value = storage.adidas.profile["tr"];
+        document.querySelector('select#adidasProfileTH').value = storage.adidas.profile["th"];
         document.querySelector('input#adidasATCcheckbox').checked = storage.adidas.atc;
         document.querySelector('input#adidasACOcheckbox').checked = storage.adidas.aco;
         document.querySelector('input#adidasAFcheckbox').checked = storage.adidas.af;
@@ -62,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function(){
             adidasOpt.profile = {};
         }
         adidasOpt.profile.ru = this.value;
-        console.log(adidasOpt.profile);
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
     document.querySelector("select#adidasProfileTR").addEventListener('change', function(){
@@ -70,7 +78,13 @@ document.addEventListener("DOMContentLoaded", function(){
             adidasOpt.profile = {};
         }
         adidasOpt.profile.tr = this.value;
-        console.log(adidasOpt.profile);
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    document.querySelector("select#adidasProfileTH").addEventListener('change', function(){
+        if (typeof adidasOpt.profile !== "object"){
+            adidasOpt.profile = {};
+        }
+        adidasOpt.profile.th = this.value;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
     document.querySelector("input#adidasATCcheckbox").addEventListener('change', function(){
@@ -84,5 +98,27 @@ document.addEventListener("DOMContentLoaded", function(){
     document.querySelector("input#adidasAFcheckbox").addEventListener('change', function(){
         adidasOpt.af = this.checked;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    let lamodaOpt = {};
+    chrome.storage.local.get('lamoda', function(storage){
+        document.querySelector('input#lamodaSwitch').checked = storage.lamoda.status;
+        document.querySelector('select#lamodaProfile').value = storage.lamoda.profile;
+        document.querySelector('input#lamodaACOcheckbox').checked = storage.lamoda.aco;
+        lamodaOpt = storage.lamoda;
+    });
+    document.querySelector("input#lamodaSwitch").addEventListener('change', function(){
+        lamodaOpt.status = this.checked;
+        chrome.storage.local.set({'lamoda': lamodaOpt}, function(){});
+    });
+    document.querySelector("select#lamodaProfile").addEventListener('change', function(){
+        if (typeof lamodaOpt.profile !== "object"){
+            lamodaOpt.profile = {};
+        }
+        lamodaOpt.profile = this.value;
+        chrome.storage.local.set({'lamoda': lamodaOpt}, function(){});
+    });
+    document.querySelector("input#lamodaACOcheckbox").addEventListener('change', function(){
+        lamodaOpt.aco = this.checked;
+        chrome.storage.local.set({'lamoda': lamodaOpt}, function(){});
     });
 });

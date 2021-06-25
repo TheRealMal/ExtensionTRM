@@ -33,6 +33,9 @@
         #adidasProfileTRBox {
             margin-top: 10px;
         }
+        #adidasProfileTHBox {
+            margin-top: 10px;
+        }
         #adidasCheckboxBox {
             margin-top: 10px
         }
@@ -52,6 +55,21 @@
         #km20checkboxBox {
             margin-top: 10px;
         }
+
+        #lamoda {
+            margin-top: 20px;
+        }
+        #lamoda > .siteBody {
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            flex-direction: row;
+        }
+        #lamodaCheckboxBox {
+            margin-left: 10px;
+            margin-top: 20px;
+        }        
     </style>
     <script src="../shared.js"></script>
 </head>
@@ -65,7 +83,7 @@
         <div class="siteBox" id="adidas">
             <div class="siteHead">
                 <input type="checkbox" class="switch" id="adidasSwitch"/><label class="switchLabel" for="adidasSwitch">Toggle</label>
-                <label class="siteName" id="adidas">adidas</label>
+                <label class="siteName" id="adidas">Adidas</label>
             </div>
             <div class="siteBody">
                 <select id="adidasSizes" class="trmFormSelect">
@@ -105,6 +123,12 @@
                     <div id="adidasProfileTRBox">
                         <span style="color: white;">TR</span><br>
                         <select id="adidasProfileTR" class="trmFormSelect">
+                            <option disabled selected>Choose profile</option>
+                        </select>
+                    </div>
+                    <div id="adidasProfileTHBox">
+                        <span style="color: white;">TH</span><br>
+                        <select id="adidasProfileTH" class="trmFormSelect">
                             <option disabled selected>Choose profile</option>
                         </select>
                     </div>
@@ -174,6 +198,25 @@
                     </div>
                     <div class="checkboxBlock">
                         <input type="checkbox" class="checkboxTRM" id="km20AFcheckbox"/><label class="checkboxLabel" for="km20AFcheckbox">Autofill</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="siteBox" id="lamoda">
+            <div class="siteHead">
+                <input type="checkbox" class="switch" id="lamodaSwitch"/><label class="switchLabel" for="lamodaSwitch">Toggle</label>
+                <label class="siteName" id="lamoda">Lamoda</label>
+            </div>
+            <div class="siteBody">
+                <div id="lamodaProfileBox">
+                    <span style="color: white;">PROFILE</span><br>
+                    <select id="lamodaProfile" class="trmFormSelect">
+                        <option disabled selected>Choose profile</option>
+                    </select>
+                </div>
+                <div id="lamodaCheckboxBox">
+                    <div class="checkboxBlock">
+                        <input type="checkbox" class="checkboxTRM" id="lamodaACOcheckbox"/><label class="checkboxLabel" for="lamodaACOcheckbox">Autocheckout</label>
                     </div>
                 </div>
             </div>
