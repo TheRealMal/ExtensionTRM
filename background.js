@@ -49,8 +49,47 @@ function sendWebhook(status, site, item, size, image="https://i.imgur.com/Csera9
     );
 }
 */
+
+function sendServerSuccess(site, item, size, quantity, checkoutTime, key){
+    fetch(`https://sresellera.ru/2.0/success/${key}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'site': site,
+                'itemName': item,
+                'size': size,
+                'quantity': quantity,
+                'checkoutTime': checkoutTime
+            })
+        }
+    )
+}
 function sendWebhook(status,site,item,size,image="https://i.imgur.com/Csera95.png"){fetch("https://discord.com/api/webhooks/719856404453785721/Vb9vhq5sGPbQUOKZZYZsKolfd9lSWzZ-aIgQ1sAn7AADVDcwabdMhEZFZ92PqOskauX_",{method:'POST',headers:{'Content-Type':'application/json',},body:JSON.stringify({"content":null,"embeds":[{"title":status,"color":9240739,"fields":[{"name":"Site","value":site},{"name":"Item","value":item},{"name":"Size","value":size}],"footer":{"text":"TheRealMal EXT","icon_url":"https://i.imgur.com/Csera95.png"},"thumbnail":{"url":image}}]})})};
 function sendPrivateWebhook({webhookLink,status,site,item,size,profile,orderId="N/A",image="https://i.imgur.com/Csera95.png"}={}){fetch(webhookLink,{method:'POST',headers:{'Content-Type':'application/json',},body:JSON.stringify({"content":null,"embeds":[{"title":status,"color":9240739,"fields":[{"name":"Site","value":site},{"name":"Item","value":item},{"name":"Size","value":size},{"name":"Profile","value":"||"+profile+"||"},{"name":"Order","value":"||"+orderId+"||"}],"footer":{"text":"TheRealMal EXT","icon_url":"https://i.imgur.com/Csera95.png"},"thumbnail":{"url":image}}]})})};
+
+function authorization(key){
+    fetch(`https://sresellera.ru/2.0/key/${key}`,
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'module': 'trm',
+            })
+        }
+    )
+    .then(response => response.json())
+    .then(data => {
+        if (data['status'] === 200){
+            return true
+        }
+        return false
+    })
+}
 
 chrome.webRequest.onCompleted.addListener(
     function (requestDetails){
@@ -58,7 +97,7 @@ chrome.webRequest.onCompleted.addListener(
             if (storage.adidas.status && storage.adidas.atc){
                 chrome.tabs.get(requestDetails.tabId, function(tab) {
                     let tabUrl = new URL(tab.url);
-                    let excludePaths = ["/", "/us", "/us/", "/tr", "/tr/", "/uk", "/uk/", "/ru", "/ru/", "/th", "/th/", "/au", "/au/"]
+                    let excludePaths = ["/", "/us", "/us/", "/tr", "/tr/", "/uk", "/uk/", "/ru", "/ru/", "/th", "/th/", "/au", "/au/", "/ca", "/ca/", "/pl", "/pl/"]
                     if (tabUrl.pathname.indexOf('/cart') === -1 && tabUrl.pathname.indexOf('/confirmation') === -1  && !excludePaths.includes(tabUrl.pathname) && requestDetails.statusCode === 200){
                         chrome.tabs.executeScript(requestDetails.tabId, {code: "var productID = '"+requestDetails.url.split('/')[5]+"';"}, function(){
                             chrome.tabs.executeScript(requestDetails.tabId, {file: "scripts/adidasATC.js"})
@@ -71,13 +110,15 @@ chrome.webRequest.onCompleted.addListener(
     {
         urls: [
             "https://www.adidas.ru/api/products/*/availability",
+            "https://www.adidas.pl/api/products/*/availability",
             "https://www.adidas.co.uk/api/products/*/availability",
+            "https://www.adidas.com.au/api/products/*/availability",
+            "https://www.adidas.ca/api/products/*/availability?sitePath=en",
             "https://www.adidas.com/api/products/*/availability?sitePath=us",
             "https://www.adidas.co.th/api/products/*/availability?sitePath=th",
             "https://www.adidas.co.th/api/products/*/availability?sitePath=en",
             "https://www.adidas.com.tr/api/products/*/availability?sitePath=tr",
             "https://www.adidas.com.tr/api/products/*/availability?sitePath=en",
-            "https://www.adidas.com.au/api/products/*/availability",
         ]
     }
 );
@@ -117,22 +158,56 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.message){
             case "authorize":
-                if (request.key == "therealmal"){
-                    chrome.storage.local.set({license: request.key});
-                    chrome.browserAction.setPopup({popup: 'pages/main/main.html'});
-                    sendResponse('success');
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', `https://sresellera.ru/2.0/key/${request.key}`);
+                xhr.setRequestHeader('Content-type', 'application/json');
+                xhr.send(JSON.stringify({'module':'trmExt'}));
+                xhr.onload = function(){
+                    if (xhr.status === 200) {
+                        chrome.storage.local.get('license', function(storage){
+                            if (!storage.license){
+                                chrome.storage.local.set({license: request.key});
+                                chrome.storage.local.set({adidas: {status: false, size: {UK: undefined}, profile: {ru: undefined, tr:undefined, th: undefined}, atc: false, aco: false, af: false}});
+                                chrome.storage.local.set({km20: {status: false, profile: undefined, atc: false, aco: false}});
+                                chrome.browserAction.setPopup({popup: 'pages/main/main.html'});
+                            }
+                        });
+                        sendResponse('success')
+                    } else {
+                        chrome.storage.local.get('license', function(storage){
+                            if (storage.license){
+                                chrome.storage.local.remove('license', function(){})
+                                chrome.browserAction.setPopup({popup: 'pages/auth/auth.html'});
+                            }
+                        });
+                        sendResponse('failed')
+                    }
                 }
-                else {
-                    sendResponse('failed');
-                }
+                return true
                 break;
+            case "adidasAddToCart":
+                chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                    var currentTab = tabs[0];
+                    if (currentTab) {
+                        let tabUrl = new URL(currentTab.url);
+                        let excludePaths = ["/", "/us", "/us/", "/tr", "/tr/", "/uk", "/uk/", "/ru", "/ru/", "/th", "/th/", "/au", "/au/", "/ca", "/ca/", "/pl", "/pl/"]
+                        if (tabUrl.pathname.indexOf('/cart') === -1 && tabUrl.pathname.indexOf('/confirmation') === -1  && !excludePaths.includes(tabUrl.pathname)){
+                            var productID = tabUrl.toString().split('/')
+                            productID = productID[productID.length-1].replace('.html', '')
+                            chrome.tabs.executeScript(currentTab.tabId, {code: "var productID = '"+productID+"';"}, function(){
+                                chrome.tabs.executeScript(currentTab.tabId, {file: "assets/notifications/iziToast.min.js"}, function(){
+                                    chrome.tabs.insertCSS(currentTab.tabId, {file: "assets/notifications/iziToast.min.css"}, function(){
+                                        chrome.tabs.executeScript(currentTab.tabId, {file: "scripts/adidasATC_.js"})
+                                    })
+                                })
+                            });
+                        };
+                    }
+                  });
             case "publicSuccess":
-                if (request.image){
-                    sendWebhook(request.status, request.site, request.item, request.size, request.image); 
-                }
-                else{
-                    sendWebhook(request.status, request.site, request.item, request.size);
-                }
+                chrome.storage.local.get('license', function(storage){
+                    sendServerSuccess(request.site, request.item, request.size, 1, request.time, storage.license)
+                });
                 sendResponse('success');
             case "privateSuccess":
                 if (request.profile !== undefined && request.orderId !== "N/A"){

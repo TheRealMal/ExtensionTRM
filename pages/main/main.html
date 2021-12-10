@@ -53,7 +53,8 @@
             width: 180px;
         }
         #km20checkboxBox {
-            margin-top: 10px;
+            margin-top: 8px;
+            margin-left: 10px;
         }
 
         #lamoda {
@@ -69,7 +70,29 @@
         #lamodaCheckboxBox {
             margin-left: 10px;
             margin-top: 20px;
-        }        
+        }
+        .saveButton {
+            display: table;
+            margin: 10px 0px 0px 5px;
+            text-align: center;
+            width: 175px;
+            height: 25px;
+            color: white;
+            background-color: rgb(110, 0, 130);
+            border: 1.5px solid rgba(111, 0, 130, 0);
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .saveButton:hover {
+            outline: 0;
+            background-color: rgb(11, 11, 11);
+            border: 1.5px solid rgb(110, 0, 130);
+            cursor: pointer;
+        }
+        .saveButton:focus {
+            outline: 0;
+            background-color: rgb(110, 0, 130);
+        }     
     </style>
     <script src="../shared.js"></script>
 </head>
@@ -143,46 +166,18 @@
                     <div class="checkboxBlock">
                         <input type="checkbox" class="checkboxTRM" id="adidasAFcheckbox"/><label class="checkboxLabel" for="adidasAFcheckbox">Autofill</label>
                     </div>
+                    <div class="buttonBlock">
+                        <button class="saveButton" id="adidasAddToCart">Force ATC</button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="siteBox" id="km20">
             <div class="siteHead">
-                <input type="checkbox" class="switch" id="km20Switch"/><label class="switchLabel" for="kmSwitch">Toggle</label>
+                <input type="checkbox" class="switch" id="km20Switch"/><label class="switchLabel" for="km20Switch">Toggle</label>
                 <label class="siteName" id="km20">KM20</label>
             </div>
             <div class="siteBody">
-                <div id="km20SizesBox">
-                    <span style="color: white;">SIZES</span>
-                    <br>
-                    <select id="km20Sizes" class="trmFormSelect">
-                        <option disabled selected>Choose size</option>
-                        <option value="smallest">Smallest</option>
-                        <option value="largest">Largest</option>
-                        <option value="random">Random</option>
-                        <option value="3.5">3.5 UK / US</option>
-                        <option value="4">4 UK / US</option>
-                        <option value="4.5">4.5 UK / US</option>
-                        <option value="5">5 UK / US</option>
-                        <option value="5.5">5.5 UK / US</option>
-                        <option value="6">6 UK / US</option>
-                        <option value="6.5">6.5 UK / US</option>
-                        <option value="7">7 UK / US</option>
-                        <option value="7.5">7.5 UK / US</option>
-                        <option value="8">8 UK / US</option>
-                        <option value="8.5">8.5 UK / US</option>
-                        <option value="9">9 UK / US</option>
-                        <option value="9.5">9.5 UK / US</option>
-                        <option value="10">10 UK / US</option>
-                        <option value="10.5">10.5 UK / US</option>
-                        <option value="11">11 UK / US</option>
-                        <option value="11.5">11.5 UK / US</option>
-                        <option value="12">12 UK / US</option>
-                        <option value="12.5">12.5 UK / US</option>
-                        <option value="13">13 UK / US</option>
-                        <option value="13.5">13.5 UK / US</option>
-                    </select>
-                </div>
                 <div id="km20ProfileBox">
                     <span style="color: white;">PROFILE</span><br>
                     <select id="km20Profile" class="trmFormSelect">
@@ -195,28 +190,6 @@
                     </div>
                     <div class="checkboxBlock">
                         <input type="checkbox" class="checkboxTRM" id="km20ACOcheckbox"/><label class="checkboxLabel" for="km20ACOcheckbox">Autocheckout</label>
-                    </div>
-                    <div class="checkboxBlock">
-                        <input type="checkbox" class="checkboxTRM" id="km20AFcheckbox"/><label class="checkboxLabel" for="km20AFcheckbox">Autofill</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="siteBox" id="lamoda">
-            <div class="siteHead">
-                <input type="checkbox" class="switch" id="lamodaSwitch"/><label class="switchLabel" for="lamodaSwitch">Toggle</label>
-                <label class="siteName" id="lamoda">Lamoda</label>
-            </div>
-            <div class="siteBody">
-                <div id="lamodaProfileBox">
-                    <span style="color: white;">PROFILE</span><br>
-                    <select id="lamodaProfile" class="trmFormSelect">
-                        <option disabled selected>Choose profile</option>
-                    </select>
-                </div>
-                <div id="lamodaCheckboxBox">
-                    <div class="checkboxBlock">
-                        <input type="checkbox" class="checkboxTRM" id="lamodaACOcheckbox"/><label class="checkboxLabel" for="lamodaACOcheckbox">Autocheckout</label>
                     </div>
                 </div>
             </div>

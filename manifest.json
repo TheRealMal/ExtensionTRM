@@ -1,9 +1,8 @@
 {
     "name": "therealmal",
     "description": "Secret developments of Russian scientists.",
-    "version": "0.0.3",
-    "version_name": "0.0.3",
-
+    "version": "0.0.4",
+    "version_name": "0.0.4",
     "author": "@23therealmal23",
 
     "browser_action": {
@@ -55,7 +54,9 @@
         },
         {
             "matches": [
+                "https://www.adidas.co.th/th/delivery",
                 "https://www.adidas.co.th/en/delivery",
+                "https://www.adidas.co.th/th/payment",
                 "https://www.adidas.co.th/en/payment"
             ],
             "js": [
@@ -85,25 +86,11 @@
         },
         {
             "matches": [
-                "https://www.lamoda.ru/p/*"
+                "https://www.km20.ru/catalog/product/*"
             ],
             "js": [
                 "assets/notifications/iziToast.min.js",
-                "scripts/lamoda.js"
-            ],
-            "css": [
-                "assets/notifications/iziToast.min.css"
-            ],
-            "all_frames": true,
-            "run_at": "document_start"
-        },
-        {
-            "matches": [
-                "https://shoppingcart.aliexpress.ru/*"
-            ],
-            "js": [
-                "assets/notifications/iziToast.min.js",
-                "scripts/aliexpress.js"
+                "scripts/km20.js"
             ],
             "css": [
                 "assets/notifications/iziToast.min.css"

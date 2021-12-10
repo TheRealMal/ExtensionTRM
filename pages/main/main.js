@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function(){
             opt = document.createElement('option');
             opt.value = profile;
             opt.innerHTML = profile;
-            document.querySelector('select#lamodaProfile').appendChild(opt);
+            document.querySelector('select#km20Profile').appendChild(opt);
         }
     });
     let adidasOpt = {};
@@ -99,26 +99,43 @@ document.addEventListener("DOMContentLoaded", function(){
         adidasOpt.af = this.checked;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-    let lamodaOpt = {};
-    chrome.storage.local.get('lamoda', function(storage){
-        document.querySelector('input#lamodaSwitch').checked = storage.lamoda.status;
-        document.querySelector('select#lamodaProfile').value = storage.lamoda.profile;
-        document.querySelector('input#lamodaACOcheckbox').checked = storage.lamoda.aco;
-        lamodaOpt = storage.lamoda;
+
+    let km20Opt = {};
+    chrome.storage.local.get('km20', function(storage){
+        document.querySelector('input#km20Switch').checked = storage.km20.status;
+        document.querySelector('select#km20Profile').value = storage.km20.profile;
+        document.querySelector('input#km20ATCcheckbox').checked = storage.km20.atc;
+        document.querySelector('input#km20ACOcheckbox').checked = storage.km20.aco;
+        km20Opt = storage.km20;
     });
-    document.querySelector("input#lamodaSwitch").addEventListener('change', function(){
-        lamodaOpt.status = this.checked;
-        chrome.storage.local.set({'lamoda': lamodaOpt}, function(){});
+    document.querySelector("input#km20Switch").addEventListener('change', function(){
+        km20Opt.status = this.checked;
+        chrome.storage.local.set({'km20': km20Opt}, function(){});
     });
-    document.querySelector("select#lamodaProfile").addEventListener('change', function(){
-        if (typeof lamodaOpt.profile !== "object"){
-            lamodaOpt.profile = {};
+    document.querySelector("select#km20Profile").addEventListener('change', function(){
+        if (typeof km20Opt.profile !== "object"){
+            km20Opt.profile = {};
         }
-        lamodaOpt.profile = this.value;
-        chrome.storage.local.set({'lamoda': lamodaOpt}, function(){});
+        km20Opt.profile = this.value;
+        chrome.storage.local.set({'km20': km20Opt}, function(){});
     });
-    document.querySelector("input#lamodaACOcheckbox").addEventListener('change', function(){
-        lamodaOpt.aco = this.checked;
-        chrome.storage.local.set({'lamoda': lamodaOpt}, function(){});
+    document.querySelector("input#km20ATCcheckbox").addEventListener('change', function(){
+        km20Opt.atc = this.checked;
+        chrome.storage.local.set({'km20': km20Opt}, function(){});
     });
+    document.querySelector("input#km20ACOcheckbox").addEventListener('change', function(){
+        km20Opt.aco = this.checked;
+        chrome.storage.local.set({'km20': km20Opt}, function(){});
+    });
+
+    document.querySelector("button#adidasAddToCart").addEventListener('click', function(){
+        chrome.runtime.sendMessage({message: "adidasAddToCart"}, function(response){});
+    });
+    chrome.storage.local.get('license', function(storage){
+        chrome.runtime.sendMessage({message: "authorize", key: storage.license}, function(response){
+            if (response !== "success"){
+                window.location.href = "/pages/auth/auth.html";
+            }
+        });
+    })
 });

@@ -32,14 +32,14 @@ chrome.storage.local.get(null, function(storage){
 
 
     let afTextFields = {
-        "input[name='firstName']": profile.firstName,
-        "input[name='lastName']": profile.lastName,
-        "input[name='address1']": profile.address1,
-        "input[name='houseNumber']": profile.address2,
-        "input[name='zipcode']": profile.zip,
-        "input[name='phoneNumber']": profile.phone,
-        "input[name='emailAddress']": profile.email,
-        "input[name='city']": profile.city
+        "input[name='shippingAddress.firstName']": profile.firstName,
+        "input[name='shippingAddress.lastName']": profile.lastName,
+        "input[name='shippingAddress.address1']": profile.address1,
+        "input[name='shippingAddress.houseNumber']": profile.address2,
+        "input[name='shippingAddress.zipcode']": profile.zip,
+        "input[name='shippingAddress.phoneNumber']": profile.phone,
+        "input[name='shippingAddress.emailAddress']": profile.email,
+        "input[name='shippingAddress.city']": profile.city
     };
     let afIFrameFields = {
         "input[name='card-number']": profile.cardNumber,
@@ -94,9 +94,11 @@ chrome.storage.local.get(null, function(storage){
     const callback = function(mutationsList, observer){
         for (mutation of mutationsList){
             switch (mutation.type){
-                case "childList":
+                case 'childList':
                     for (x of mutation.addedNodes){
-                        if (x.tagName == "FORM" || x.tagName == "MAIN"){
+                        console.log(x.tagName, 1, x)
+                        if (x.tagName === 'FORM' || x.tagName === 'MAIN' || x.className === 'qa-payment-option'){
+                            autofillYoomoney()
                             autofillTextFields(afTextFields);
                             autofillCheckboxes(getEls("input[type='checkbox']"));
                             chrome.storage.local.get('adidas', function(storage){
@@ -108,8 +110,10 @@ chrome.storage.local.get(null, function(storage){
                         }
                     }
                     break;
-                case "attributes":
-                    if (mutation.target.tagName == "BODY"){
+                case 'attributes':
+                    console.log(mutation.target.tagName, 2, mutation.target)
+                    if (mutation.target.tagName === 'BODY'){
+                        autofillYoomoney()
                         autofillTextFields(afTextFields);
                         autofillCheckboxes(getEls("input[type='checkbox']"));
                         chrome.storage.local.get('adidas', function(storage){

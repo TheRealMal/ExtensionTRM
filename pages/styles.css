@@ -5,6 +5,7 @@ body {
     font-style: normal;
     font-variant: normal;
     user-select: none;
+    background: url('chrome-extension://__MSG_@@extension_id__/assets/body.png') no-repeat center center;
     background-color: rgb(11, 11, 11);
 }
 .hidden {
