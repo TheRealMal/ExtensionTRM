@@ -16,7 +16,7 @@ body {
     width: 200px;
     height: 30px;
     font-size: 14px;
-    background-color: rgb(11, 11, 11);
+    background: rgba(11, 11, 11, 0);
     border: 0;
     border-bottom: 1.5px solid rgb(110, 0, 130);
     color: white;
@@ -33,6 +33,10 @@ body {
     border-bottom: 1.5px solid rgb(110, 0, 130);
     box-shadow: 0 5px 10px -10px rgb(255, 0, 255);
 }
+.trmFormSelect option {
+    background: rgba(11, 11, 11, 100);
+}
+
 .switch {
     height: 0;
     width: 0;
@@ -154,4 +158,71 @@ div#body {
 
 ::-webkit-scrollbar-thumb {
     background-color: rgb(110, 0, 130);
+}
+
+:root {
+  --form-control-color: rgb(255, 0, 255);
+  --form-control-disabled: #959495;
+}
+
+.form-control {
+  line-height: 0.9;
+  display: grid;
+  grid-template-columns: 0.75em auto;
+  gap: 0em;
+}
+
+.form-control + .form-control {
+  margin-top: 1em;
+}
+
+.form-control--disabled {
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--form-background);
+  margin: 0;
+
+  font: inherit;
+  color: currentColor;
+  width: 0.65em;
+  height: 0.65em;
+  border: 0.05em solid currentColor;
+  border-radius: 0.05em;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.4em;
+  height: 0.4em;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transform-origin: bottom left;
+  transition: 60ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+  background-color: CanvasText;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:focus {
+  outline: max(1px, 0.05em) solid currentColor;
+  outline-offset: max(1px, 0.05em);
+}
+
+input[type="checkbox"]:disabled {
+  --form-control-color: var(--form-control-disabled);
+
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
 }

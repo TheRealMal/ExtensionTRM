@@ -30,7 +30,8 @@ chrome.storage.local.get('adidas', function(storage){
                                     "product_id":size["sku"].split("_")[0],
                                     "product_variation_sku":size["sku"],
                                     "quantity":1,
-                                    "size":size["size"]
+                                    "size":size["size"],
+                                    "specialLaunchProduct":storage.adidas.isSpecial
                                 }])
                             }).then(function (response){
                                 if (response.status == 200){
@@ -60,7 +61,8 @@ chrome.storage.local.get('adidas', function(storage){
                                     "product_id":size["sku"].split("_")[0],
                                     "product_variation_sku":size["sku"],
                                     "quantity":1,
-                                    "size":size["size"]
+                                    "size":size["size"],
+                                    "specialLaunchProduct":storage.adidas.isSpecial
                                 }])
                             }).then(function (response){
                                 if (response.status == 200){
@@ -90,7 +92,8 @@ chrome.storage.local.get('adidas', function(storage){
                                     "product_id":size["sku"].split("_")[0],
                                     "product_variation_sku":size["sku"],
                                     "quantity":1,
-                                    "size":size["size"]
+                                    "size":size["size"],
+                                    "specialLaunchProduct":storage.adidas.isSpecial
                                 }])
                             }).then(function (response){
                                 if (response.status == 200){

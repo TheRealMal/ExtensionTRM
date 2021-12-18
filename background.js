@@ -1,55 +1,3 @@
-/*
-chrome.tabs.onUpdated.addListener(
-    function (tabId, changeInfo, tab){
-        if (changeInfo.status == "unloaded"){
-            if (tab.url.indexOf("https://www.adidas.com.tr/on/demandware.store/Sites-adidas-TR-Site/tr_TR/") != -1){
-                chrome.tabs.executeScript({file: "scripts/adidasTR.js"});
-            }
-        }
-    }
-);
-*/
-/*
-function sendWebhook(status, site, item, size, image="https://i.imgur.com/Csera95.png"){
-    fetch("https://discord.com/api/webhooks/719856404453785721/Vb9vhq5sGPbQUOKZZYZsKolfd9lSWzZ-aIgQ1sAn7AADVDcwabdMhEZFZ92PqOskauX_",
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "content": null,
-                "embeds": [{
-                    "title": status,
-                    "color": 9240739,
-                    "fields": [
-                        {
-                            "name": "Site",
-                            "value": site
-                        },
-                        {
-                            "name": "Item",
-                            "value": item
-                        },
-                        {
-                            "name": "Size",
-                            "value": size
-                        }
-                    ],
-                    "footer": {
-                        "text": "TheRealMal EXT",
-                        "icon_url": "https://i.imgur.com/Csera95.png"
-                    },
-                    "thumbnail": {
-                        "url": image
-                    }
-                }]
-            })
-        }
-    );
-}
-*/
-
 function sendServerSuccess(site, item, size, quantity, checkoutTime, key){
     fetch(`https://sresellera.ru/2.0/success/${key}`,
         {
@@ -193,11 +141,14 @@ chrome.runtime.onMessage.addListener(
                         let excludePaths = ["/", "/us", "/us/", "/tr", "/tr/", "/uk", "/uk/", "/ru", "/ru/", "/th", "/th/", "/au", "/au/", "/ca", "/ca/", "/pl", "/pl/"]
                         if (tabUrl.pathname.indexOf('/cart') === -1 && tabUrl.pathname.indexOf('/confirmation') === -1  && !excludePaths.includes(tabUrl.pathname)){
                             var productID = tabUrl.toString().split('/')
-                            productID = productID[productID.length-1].replace('.html', '')
+                            productID = productID[productID.length-1].split('.html')[0]
                             chrome.tabs.executeScript(currentTab.tabId, {code: "var productID = '"+productID+"';"}, function(){
                                 chrome.tabs.executeScript(currentTab.tabId, {file: "assets/notifications/iziToast.min.js"}, function(){
                                     chrome.tabs.insertCSS(currentTab.tabId, {file: "assets/notifications/iziToast.min.css"}, function(){
-                                        chrome.tabs.executeScript(currentTab.tabId, {file: "scripts/adidasATC_.js"})
+                                        if (tabUrl.hostname !== "www.adidas.com.tr")
+                                            chrome.tabs.executeScript(currentTab.tabId, {file: "scripts/adidasATC_.js"})
+                                        else
+                                            chrome.tabs.executeScript(currentTab.tabId, {file: "scripts/adidasTRrequest.js"})
                                     })
                                 })
                             });

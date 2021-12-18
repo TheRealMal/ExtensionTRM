@@ -1,5 +1,23 @@
 document.addEventListener("DOMContentLoaded", function(){
     let adidasSizesTab = {
+        '3K UK':'230',
+        '4K UK':'240',
+        '5K UK':'250',
+        '5.5K UK':'260',
+        '6K UK':'270',
+        '7K UK':'290',
+        '7.5K UK':'310',
+        '8.5K UK':'330',
+        '9.5K UK':'350',
+        '10K UK':'370',
+        '11K UK':'390',
+        '11.5K UK':'410',
+        '12.5K UK':'430',
+        '13.5K UK':'450',
+        '1 UK':'470',
+        '2 UK':'490',
+        '2.5 UK':'510',
+        '3 UK':'520',
         '3.5 UK':'530',
         '4 UK':'540',
         '4.5 UK':'550',
@@ -55,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function(){
         document.querySelector('input#adidasATCcheckbox').checked = storage.adidas.atc;
         document.querySelector('input#adidasACOcheckbox').checked = storage.adidas.aco;
         document.querySelector('input#adidasAFcheckbox').checked = storage.adidas.af;
+        document.querySelector('input#adidasSPcheckbox').checked = storage.adidas.isSpecial;
         adidasOpt = storage.adidas;
     });
     document.querySelector("input#adidasSwitch").addEventListener('change', function(){
@@ -99,7 +118,10 @@ document.addEventListener("DOMContentLoaded", function(){
         adidasOpt.af = this.checked;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-
+    document.querySelector("input#adidasSPcheckbox").addEventListener('change', function(){
+        adidasOpt.isSpecial = this.checked;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
     let km20Opt = {};
     chrome.storage.local.get('km20', function(storage){
         document.querySelector('input#km20Switch').checked = storage.km20.status;

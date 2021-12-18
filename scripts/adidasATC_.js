@@ -31,20 +31,22 @@ chrome.storage.local.get('adidas', function(storage){
             "product_id":productID,
             "product_variation_sku":`${productID}_${storage.adidas.size.var}`,
             "quantity":1,
-            "specialLaunchProduct":true
+            "specialLaunchProduct":storage.adidas.isSpecial
         }]),
         mode: 'cors',
         credentials: 'include'
     }).then(function (response){
         if (response.status == 200){
-            let res = (typeof response.json()["shipmentList"] !== "undefined") ? response.json()["shipmentList"][0]["productLineItemList"] : [];
-            res.forEach(item => {
-                if (item["productId"] === `${productID}_${storage.adidas.size.var}`){
-                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: storage.adidas.size.UK, time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
-                    window.location = `https://${window.location.hostname}/delivery`;
-                }
+            response.json().then(r => {
+                let res = (typeof r["shipmentList"] !== "undefined") ? r["shipmentList"][0]["productLineItemList"] : [];
+                res.forEach(item => {
+                    if (item["productId"] === `${productID}_${storage.adidas.size.var}`){
+                        chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: storage.adidas.size.UK, time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
+                        window.location = `https://${window.location.hostname}/delivery`;
+                    }
+                })
+                sendError(`Failed to cart ${productID} - ${storage.adidas.size.UK}`)
             })
-            sendError(`Failed to cart ${productID} - ${storage.adidas.size.UK}`)
         } else {
             sendError(`Failed to cart ${productID} - ${storage.adidas.size.UK}`)
         }
