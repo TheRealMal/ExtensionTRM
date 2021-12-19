@@ -7,58 +7,12 @@
     <link rel="stylesheet" href="../styles.css">
     <style>
         #webhookInput {
-            display: table;
             margin: 0 auto;
-            width: 250px;
-            height: 25px;
-            padding: 0px 6px 0px 6px;
-            color: white;
-            border: 0;
-            border-bottom: 1.5px solid rgb(110, 0, 130);
-            background-color: rgb(11, 11, 11);
-            text-align: center;
-            transition: 0.5s;
         }
-        #webhookInput::placeholder {
-            color: rgba(255, 255, 255, 0.65);
-        }
-        #webhookInput:hover {
-            outline: none;
-            border-bottom: 1.5px solid rgb(110, 0, 130);
-            box-shadow: 0 5px 10px -10px rgb(255, 0, 255);
-        }
-        #webhookInput:focus {
-            outline: none;
-            border-bottom: 1.5px solid rgb(110, 0, 130);
-            box-shadow: 0 5px 10px -10px rgb(255, 0, 255);
-        }
-
         #settingsInput {
             display: none;
             margin: 0 auto;
             margin-top: 10px;
-            width: 250px;
-            height: 25px;
-            padding: 0px 6px 0px 6px;
-            color: white;
-            border: 0;
-            border-bottom: 1.5px solid rgb(110, 0, 130);
-            background-color: rgb(11, 11, 11);
-            text-align: center;
-            transition: display 0.5s;
-        }
-        #settingsInput::placeholder {
-            color: rgba(255, 255, 255, 0.65);
-        }
-        #settingsInput:hover {
-            outline: none;
-            border-bottom: 1.5px solid rgb(110, 0, 130);
-            box-shadow: 0 5px 10px -10px rgb(255, 0, 255);
-        }
-        #settingsInput:focus {
-            outline: none;
-            border-bottom: 1.5px solid rgb(110, 0, 130);
-            box-shadow: 0 5px 10px -10px rgb(255, 0, 255);
         }
         .saveButton {
             display: table;
@@ -103,14 +57,14 @@
     </div>
     <div id="body">
         <div id="discordWebhookBlock">
-            <input id="webhookInput" placeholder="Discord webhook">
+            <input id="webhookInput" placeholder="Discord webhook" class="customInput">
             <button class="saveButton" id="discordSave">Save</button>
         </div>
         <div id="exportImportBlock">
             <label>Settings Manage</label><br>
             <button class="saveButton" id="exportSettings">Export</button>
             <button class="saveButton" id="importSettings">Import</button><br>
-            <input id="settingsInput" placeholder="Import Data">
+            <input id="settingsInput" placeholder="Import Data" class="customInput">
         </div>
     </div>
 </body>

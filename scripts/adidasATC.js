@@ -35,7 +35,7 @@ chrome.storage.local.get('adidas', function(storage){
                                 }])
                             }).then(function (response){
                                 if (response.status == 200){
-                                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: size["size"]  + " [Smallest]", time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
+                                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: storage.adidas.size.UK  + " [Smallest]", time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
                                     window.location = `https://${window.location.hostname}/delivery`;
                                 }
                             });
@@ -66,7 +66,7 @@ chrome.storage.local.get('adidas', function(storage){
                                 }])
                             }).then(function (response){
                                 if (response.status == 200){
-                                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: size["size"]  + " [Largest]", time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
+                                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: storage.adidas.size.UK  + " [Largest]", time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
                                     window.location = `https://${window.location.hostname}/delivery`;
                                 }
                             });
@@ -97,7 +97,7 @@ chrome.storage.local.get('adidas', function(storage){
                                 }])
                             }).then(function (response){
                                 if (response.status == 200){
-                                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: size["size"], time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
+                                    chrome.runtime.sendMessage({message: "publicSuccess", site: `ATC: ${window.location.hostname}`, item: productID, size: storage.adidas.size.UK, time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
                                     window.location = `https://${window.location.hostname}/delivery`;
                                 }
                             });
