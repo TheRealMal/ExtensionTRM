@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function(){
     document.querySelector("#profileDropdown").addEventListener("change", function(){
         let profileName = this.value;
         if (profileName !== "Create new profile") {
+            document.querySelector("#removeProfile").style.display = "block";
             $("#profileSave").text("Save");
             chrome.storage.local.get('profiles', function(storage){
                 $('#profileName').val(profileName);
@@ -19,12 +20,14 @@ document.addEventListener("DOMContentLoaded", function(){
                 }
             });
         } else {
+            document.querySelector("#removeProfile").style.display = "none";
             $("#profileSave").text("Create");
             $("#profilesBox :input").each(function (){
                 $(this).val("");
             })
         }
     });
+    
     document.querySelector("#profileName").addEventListener("change", function(){
         if (document.querySelector("#profileDropdown").value !== "Create new profile"){
             if (document.querySelector("#profileName").value === document.querySelector("#profileDropdown").value){
@@ -33,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function(){
             else {
                 $("#profileSave").text("Create");
             }
+        } else {
         }
     })
     document.querySelector("#profileSave").addEventListener("click", function(){
@@ -69,5 +73,20 @@ document.addEventListener("DOMContentLoaded", function(){
                 })
             }
         });
+    })
+    document.querySelector("#removeProfile").addEventListener("click", function(){
+        chrome.storage.local.get('profiles', function(storage){
+            delete storage.profiles[$('#profileName').val()]
+            chrome.storage.local.set({'profiles': storage.profiles}, function(){});
+            dropdownProfiles = [];
+            $('#profileDropdown option').each(function() {
+                dropdownProfiles.push($(this).val())
+            });
+            $(`#profileDropdown option[value='${$('#profileName').val()}']`).remove();
+            $("#profilesBox :input").each(function (){
+                $(this).val("");
+            })
+            document.querySelector("#removeProfile").style.display = "none";
+        })
     })
 });

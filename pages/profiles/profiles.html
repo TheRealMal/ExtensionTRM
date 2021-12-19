@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="../styles.css">
     <script src="../shared.js"></script>
     <style>
+        #removeProfile {
+            display: none;
+        }
         .profileLabel {
             font-size: 15px;
         }
@@ -48,6 +51,32 @@
             outline: 0;
             background-color: rgb(110, 0, 130);
         }
+
+        .deleteButton {
+            display: block;
+            z-index: 1;
+            position: absolute;
+            top: 55px;
+            right: 35px;
+            height: 25px;
+            width: 60px;
+            text-align: center;
+            color: white;
+            background-color: rgb(130, 0, 0);
+            border: 1.5px solid rgba(111, 0, 130, 0);
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .deleteButton:hover {
+            outline: 0;
+            background-color: rgb(11, 11, 11);
+            border: 1.5px solid rgb(130, 0, 0);
+            cursor: pointer;
+        }
+        .deleteButton:focus {
+            outline: 0;
+            background-color: rgb(130, 0, 0);
+        }
     </style>
 </head>
 <body>
@@ -61,6 +90,7 @@
             <select id="profileDropdown" class="trmFormSelect">
                 <option selected>Create new profile</option>
             </select>
+            <button class="deleteButton" id="removeProfile">Delete</button>
             <br><div class="inputBox">
                 <label for="profileName" class="profileLabel">Profile Name</label>
                 <br><input id="profileName" placeholder="EXAMPLE" class="customInput">
