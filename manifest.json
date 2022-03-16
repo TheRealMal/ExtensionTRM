@@ -1,8 +1,8 @@
 {
     "name": "therealmal",
     "description": "Secret developments of Russian scientists.",
-    "version": "0.0.6",
-    "version_name": "0.0.6",
+    "version": "0.0.7",
+    "version_name": "0.0.7 beta",
     "author": "@23therealmal23",
 
     "browser_action": {
@@ -91,6 +91,20 @@
             "js": [
                 "assets/notifications/iziToast.min.js",
                 "scripts/km20.js"
+            ],
+            "css": [
+                "assets/notifications/iziToast.min.css"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://street-beat.ru/d/*"
+            ],
+            "js": [
+                "assets/notifications/iziToast.min.js",
+                "scripts/streetbeat.js"
             ],
             "css": [
                 "assets/notifications/iziToast.min.css"
