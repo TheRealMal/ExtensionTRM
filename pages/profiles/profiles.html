@@ -29,29 +29,9 @@
             margin-left: 10px;
             padding-bottom: 10px;
         }
-        .saveButton {
-            display: table;
-            margin: 10px auto 0px auto;
-            text-align: center;
+        .trmCustomButton {
             width: 120px;
-            height: 25px;
-            color: white;
-            background-color: rgb(110, 0, 130);
-            border: 1.5px solid rgba(111, 0, 130, 0);
-            border-radius: 3px;
-            transition: background-color 0.3s;
         }
-        .saveButton:hover {
-            outline: 0;
-            background-color: rgb(11, 11, 11);
-            border: 1.5px solid rgb(110, 0, 130);
-            cursor: pointer;
-        }
-        .saveButton:focus {
-            outline: 0;
-            background-color: rgb(110, 0, 130);
-        }
-
         .deleteButton {
             display: block;
             z-index: 1;
@@ -69,7 +49,7 @@
         }
         .deleteButton:hover {
             outline: 0;
-            background-color: rgb(11, 11, 11);
+            background-color: rgb(11, 11, 11, 0);
             border: 1.5px solid rgb(130, 0, 0);
             cursor: pointer;
         }
@@ -147,7 +127,7 @@
                 <label for="extra" class="profileLabel">Extra Field</label>
                 <br><input id="extra" placeholder="Some info" class="customInput">
             </div>
-            <button class="saveButton" id="profileSave">Create</button>
+            <button class="trmButton trmCustomButton" id="profileSave">Create</button>
         </div>
     </div>
 </body>

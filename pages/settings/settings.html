@@ -14,27 +14,8 @@
             margin: 0 auto;
             margin-top: 10px;
         }
-        .saveButton {
-            display: table;
-            margin: 10px auto 0px auto;
-            text-align: center;
+        .trmButtonCustom {
             width: 120px;
-            height: 25px;
-            color: white;
-            background-color: rgb(110, 0, 130);
-            border: 1.5px solid rgba(111, 0, 130, 0);
-            border-radius: 3px;
-            transition: background-color 0.3s;
-        }
-        .saveButton:hover {
-            outline: 0;
-            background-color: rgb(11, 11, 11);
-            border: 1.5px solid rgb(110, 0, 130);
-            cursor: pointer;
-        }
-        .saveButton:focus {
-            outline: 0;
-            background-color: rgb(110, 0, 130);
         }
         #exportImportBlock {
             margin: 10px auto 0px auto;
@@ -58,12 +39,12 @@
     <div id="body">
         <div id="discordWebhookBlock">
             <input id="webhookInput" placeholder="Discord webhook" class="customInput">
-            <button class="saveButton" id="discordSave">Save</button>
+            <button class="trmButton trmButtonCustom" id="discordSave">Save</button>
         </div>
         <div id="exportImportBlock">
             <label>Settings Manage</label><br>
-            <button class="saveButton" id="exportSettings">Export</button>
-            <button class="saveButton" id="importSettings">Import</button><br>
+            <button class="trmButton trmButtonCustom" id="exportSettings">Export</button>
+            <button class="trmButton trmButtonCustom" id="importSettings">Import</button><br>
             <input id="settingsInput" placeholder="Import Data" class="customInput">
         </div>
     </div>

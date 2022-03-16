@@ -61,6 +61,10 @@ document.addEventListener("DOMContentLoaded", function(){
             opt.value = profile;
             opt.innerHTML = profile;
             document.querySelector('select#km20Profile').appendChild(opt);
+            opt = document.createElement('option');
+            opt.value = profile;
+            opt.innerHTML = profile;
+            document.querySelector('select#streetbeatProfile').appendChild(opt);
         }
     });
     let adidasOpt = {};
@@ -122,6 +126,7 @@ document.addEventListener("DOMContentLoaded", function(){
         adidasOpt.isSpecial = this.checked;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
+    
     let km20Opt = {};
     chrome.storage.local.get('km20', function(storage){
         document.querySelector('input#km20Switch').checked = storage.km20.status;
@@ -149,6 +154,35 @@ document.addEventListener("DOMContentLoaded", function(){
         km20Opt.aco = this.checked;
         chrome.storage.local.set({'km20': km20Opt}, function(){});
     });
+
+    let streetbeatOpt = {};
+    chrome.storage.local.get('streetbeat', function(storage){
+        document.querySelector('input#streetbeatSwitch').checked = storage.streetbeat.status;
+        document.querySelector('select#streetbeatProfile').value = storage.streetbeat.profile;
+        document.querySelector('input#streetbeatATCcheckbox').checked = storage.streetbeat.atc;
+        document.querySelector('input#streetbeatACOcheckbox').checked = storage.streetbeat.aco;
+        streetbeatOpt = storage.streetbeat;
+    });
+    document.querySelector("input#streetbeatSwitch").addEventListener('change', function(){
+        streetbeatOpt.status = this.checked;
+        chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
+    });
+    document.querySelector("select#streetbeatProfile").addEventListener('change', function(){
+        if (typeof streetbeatOpt.profile !== "object"){
+            streetbeatOpt.profile = {};
+        }
+        streetbeatOpt.profile = this.value;
+        chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
+    });
+    document.querySelector("input#streetbeatATCcheckbox").addEventListener('change', function(){
+        streetbeatOpt.atc = this.checked;
+        chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
+    });
+    document.querySelector("input#streetbeatACOcheckbox").addEventListener('change', function(){
+        streetbeatOpt.aco = this.checked;
+        chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
+    });
+
 
     document.querySelector("button#adidasAddToCart").addEventListener('click', function(){
         chrome.runtime.sendMessage({message: "adidasAddToCart"}, function(response){});

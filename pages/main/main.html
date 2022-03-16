@@ -57,42 +57,28 @@
             margin-left: 10px;
         }
 
-        #lamoda {
+        #streetbeat {
             margin-top: 20px;
         }
-        #lamoda > .siteBody {
+        #streetbeat > .siteBody {
             margin-top: 5px;
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             flex-direction: row;
         }
-        #lamodaCheckboxBox {
+        #streetbeatSizes {
+            width: 180px;
+        }
+        #streetbeatcheckboxBox {
+            margin-top: 8px;
             margin-left: 10px;
-            margin-top: 20px;
         }
-        .saveButton {
-            display: table;
-            margin: 10px 0px 0px 5px;
-            text-align: center;
+        
+        .trmCustomButton{
             width: 175px;
-            height: 25px;
-            color: white;
-            background-color: rgb(110, 0, 130);
-            border: 1.5px solid rgba(111, 0, 130, 0);
-            border-radius: 3px;
-            transition: background-color 0.3s;
-        }
-        .saveButton:hover {
-            outline: 0;
-            background-color: rgb(11, 11, 11);
-            border: 1.5px solid rgb(110, 0, 130);
-            cursor: pointer;
-        }
-        .saveButton:focus {
-            outline: 0;
-            background-color: rgb(110, 0, 130);
-        }     
+            margin: 10px 0px 0px 5px;
+        }  
     </style>
     <script src="../shared.js"></script>
 </head>
@@ -199,7 +185,7 @@
                         </label>
                     </div>
                     <div class="buttonBlock">
-                        <button class="saveButton" id="adidasAddToCart">Force ATC</button>
+                        <button class="trmButton trmCustomButton" id="adidasAddToCart">Force ATC</button>
                     </div>
                 </div>
             </div>
@@ -208,7 +194,7 @@
             <div class="siteHead">
                 <input type="checkbox" class="switch" id="km20Switch"/><label class="switchLabel" for="km20Switch">Toggle</label>
                 <label class="siteName" id="km20">KM20</label>
-                <hr style="display:inline-block; margin-left:10px; width:250px; margin-bottom: 9px;">
+                <hr style="display:inline-block; margin-left:10px; width:255px; margin-bottom: 9px;">
             </div>
             <div class="siteBody">
                 <div id="km20ProfileBox">
@@ -226,6 +212,33 @@
                     <div class="checkboxBlock">
                         <label class="form-control">
                             <input type="checkbox" class="checkboxTRM" id="km20ACOcheckbox"/><label class="checkboxLabel" for="km20ACOcheckbox">Autocheckout</label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="siteBox" id="streetbeat">
+            <div class="siteHead">
+                <input type="checkbox" class="switch" id="streetbeatSwitch"/><label class="switchLabel" for="streetbeatSwitch">Toggle</label>
+                <label class="siteName" id="streetbeat">Streetbeat</label>
+                <hr style="display:inline-block; margin-left:10px; width:195px; margin-bottom: 9px;">
+            </div>
+            <div class="siteBody">
+                <div id="streetbeatProfileBox">
+                    <span style="color: white;">PROFILE</span><br>
+                    <select id="streetbeatProfile" class="trmFormSelect">
+                        <option disabled selected>Choose profile</option>
+                    </select>
+                </div>
+                <div id="streetbeatcheckboxBox">
+                    <div class="checkboxBlock">
+                        <label class="form-control">
+                            <input type="checkbox" class="checkboxTRM" id="streetbeatATCcheckbox"/><label class="checkboxLabel" for="streetbeatATCcheckbox">ATC Loop</label>
+                        </label>
+                    </div>
+                    <div class="checkboxBlock">
+                        <label class="form-control">
+                            <input type="checkbox" class="checkboxTRM" id="streetbeatACOcheckbox"/><label class="checkboxLabel" for="streetbeatACOcheckbox">Autocheckout</label>
                         </label>
                     </div>
                 </div>
