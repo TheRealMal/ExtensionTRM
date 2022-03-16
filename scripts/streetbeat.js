@@ -1,10 +1,3 @@
-for (x of document.querySelectorAll('script')){
-    if (x.src.startsWith('https://long-cdn.frisbuy.ru/')){
-        productID = (new URL(x.src)).searchParams.get('sku')
-        break
-    }
-}
-
 async function getStock(id){
     try {
         const response = await fetch(`https://street-beat.ru/local/templates/streetbeat/components/multisite/catalog.detail/street_beat/ajax.php?action=getShopsAvailability&productId=${id}&cityId=19`)
@@ -26,6 +19,18 @@ async function sendATC(sizeID){
         credentials: "include"
     });
 }
+async function getRandomItem(set) {
+    let items = Array.from(set);
+    return items[Math.floor(Math.random() * items.length)];
+}
+
+var productID = ''
+for (x of document.querySelectorAll('script')){
+    if (x.src.startsWith('https://long-cdn.frisbuy.ru/')){
+        productID = (new URL(x.src)).searchParams.get('sku')
+        break
+    }
+}
 
 (async () => {
     var stock = await getStock(productID)
@@ -35,7 +40,11 @@ async function sendATC(sizeID){
             sizes.add(size)
         }
     }
-    for (let size of sizes){
+    // Random
+    for (let i=0; i < 2; i++){
+        let size = await getRandomItem(sizes)
         await sendATC(size)
     }
+    // Redirect to delivery page
+    window.location.href = 'https://street-beat.ru/order/delivery/'
 })()
