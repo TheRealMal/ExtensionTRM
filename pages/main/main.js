@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function(){
     chrome.storage.local.get('streetbeat', function(storage){
         document.querySelector('input#streetbeatSwitch').checked = storage.streetbeat.status;
         document.querySelector('select#streetbeatProfile').value = storage.streetbeat.profile;
-        document.querySelector('input#streetbeatATCcheckbox').checked = storage.streetbeat.atc;
+        document.querySelector('input#streetbeatACOLoopcheckbox').checked = storage.streetbeat.aco_loop;
         document.querySelector('input#streetbeatACOcheckbox').checked = storage.streetbeat.aco;
         streetbeatOpt = storage.streetbeat;
     });
@@ -174,8 +174,8 @@ document.addEventListener("DOMContentLoaded", function(){
         streetbeatOpt.profile = this.value;
         chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
     });
-    document.querySelector("input#streetbeatATCcheckbox").addEventListener('change', function(){
-        streetbeatOpt.atc = this.checked;
+    document.querySelector("input#streetbeatACOLoopcheckbox").addEventListener('change', function(){
+        streetbeatOpt.aco_loop = this.checked;
         chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
     });
     document.querySelector("input#streetbeatACOcheckbox").addEventListener('change', function(){
