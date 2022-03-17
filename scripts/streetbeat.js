@@ -171,47 +171,54 @@ chrome.storage.local.get(null, function(storage){
         })
         return (await response).json()
     }
-    
-    window.onload = () => {
-        var productID = ''
-        for (x of document.querySelectorAll('script')){
-            if (x.src.startsWith('https://long-cdn.frisbuy.ru/')){
-                productID = (new URL(x.src)).searchParams.get('sku')
-                break
+    async function main(storage, productID, sessid){
+        var stock = await getStock(productID)
+        var sizes = new Set()
+        for (let shop of stock.shops){
+            for (let size of Object.keys(shop.availableOffersCount)){
+                sizes.add(size)
             }
         }
-        var sessid = ''
-        for (x of document.querySelectorAll('script')){
-            if (x.innerHTML.startsWith('bxSession')){
-                sessid = x.innerHTML.split('bxSession.Expand(5000, \'')[1].split('\', true')[0]
-                break
-            }
+        await sendNotification(`Adding to cart`)
+        const basketData = await sendATC(await getRandomItem(sizes))
+        await sendNotification(`Added to cart ${basketData["skuCode"]}`)
+        await sendAuth(profile)
+        // const deliveryData = await getDelivery(profile["address"])
+        // const preorderResp = await sendPreorder(profile, deliveryData["suggestions"][0], basketData["basket"]["products"][Object.keys(basketData["basket"]["products"])[0]])
+        // console.log(preorderResp)
+        const orderResp = await sendCheckout(profile, basketData["basket"]["products"][Object.keys(basketData["basket"]["products"])[0]], sessid)
+        if (orderResp["orderNumber"] !== "" && typeof orderResp["orderNumber"] !== "undefined"){
+            await sendNotification('Checked out')
+            await chrome.runtime.sendMessage({message: "publicSuccess", site: "Streetbeat", item: orderResp["adspire"]["OrderItems"][0]["pname"], size: basketData["skuCode"], time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
+            await chrome.runtime.sendMessage({message: "privateSuccess", status:'Successfully checked out!', site: "Streetbeat", item: orderResp["adspire"]["OrderItems"][0]["pname"], size: basketData["skuCode"], profile: storage.streetbeat.profile, orderId: `[${orderResp["orderNumber"]}](https://street-beat.ru/order/complete/${orderResp["orderNumber"]}/)`, image: document.querySelectorAll('img')[1].src}, function(response){});
+            window.open(`https://street-beat.ru/order/complete/${orderResp["orderNumber"]}`, '_blank');
+        } else {
+            await sendError('Checkout failed')
         }
-        (async () => {
-            var stock = await getStock(productID)
-            var sizes = new Set()
-            for (let shop of stock.shops){
-                for (let size of Object.keys(shop.availableOffersCount)){
-                    sizes.add(size)
+        if (storage.streetbeat.aco_loop){
+            await main(storage, productID, sessid)
+        }
+    }
+    if (storage.streetbeat.status && storage.streetbeat.aco){
+        window.onload = () => {
+            var productID = ''
+            for (x of document.querySelectorAll('script')){
+                if (x.src.startsWith('https://long-cdn.frisbuy.ru/')){
+                    productID = (new URL(x.src)).searchParams.get('sku')
+                    break
                 }
             }
-            await sendNotification(`Adding to cart`)
-            const basketData = await sendATC(await getRandomItem(sizes))
-            await sendNotification(`Added to cart ${basketData["skuCode"]}`)
-            await sendAuth(profile)
-            // const deliveryData = await getDelivery(profile["address"])
-            // const preorderResp = await sendPreorder(profile, deliveryData["suggestions"][0], basketData["basket"]["products"][Object.keys(basketData["basket"]["products"])[0]])
-            // console.log(preorderResp)
-            const orderResp = await sendCheckout(profile, basketData["basket"]["products"][Object.keys(basketData["basket"]["products"])[0]], sessid)
-            if (orderResp["orderNumber"] !== "" && typeof orderResp["orderNumber"] !== "undefined"){
-                await sendNotification('Checked out')
-                await chrome.runtime.sendMessage({message: "publicSuccess", site: "Streetbeat", item: orderResp["adspire"]["OrderItems"][0]["pname"], size: basketData["skuCode"], time: (new Date()).toJSON().split('T')[1].slice(0, -1)}, function(response){});
-                await chrome.runtime.sendMessage({message: "privateSuccess", status:'Successfully checked out!', site: "Streetbeat", item: orderResp["adspire"]["OrderItems"][0]["pname"], size: basketData["skuCode"], profile: storage.streetbeat.profile, orderId: `[${orderResp["orderNumber"]}](https://street-beat.ru/order/complete/${orderResp["orderNumber"]}/)`, image: document.querySelectorAll('img')[1].src}, function(response){});
-                window.open(`https://street-beat.ru/order/complete/${orderResp["orderNumber"]}`, '_blank').focus();
-            } else {
-                await sendError('Checkout failed')
+            var sessid = ''
+            for (x of document.querySelectorAll('script')){
+                if (x.innerHTML.startsWith('bxSession')){
+                    sessid = x.innerHTML.split('bxSession.Expand(5000, \'')[1].split('\', true')[0]
+                    break
+                }
             }
-        })()
+            (async () => {
+                await main(storage, productID, sessid)
+            })()
+        }
     }
 })
 

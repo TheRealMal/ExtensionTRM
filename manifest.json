@@ -2,7 +2,7 @@
     "name": "therealmal",
     "description": "Secret developments of Russian scientists.",
     "version": "0.0.7",
-    "version_name": "0.0.7 beta",
+    "version_name": "0.0.7",
     "author": "@23therealmal23",
 
     "browser_action": {
