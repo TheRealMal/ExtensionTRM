@@ -18,27 +18,6 @@ function sendServerSuccess(site, item, size, quantity, checkoutTime, key){
 function sendWebhook(status,site,item,size,image="https://i.imgur.com/Csera95.png"){fetch("https://discord.com/api/webhooks/719856404453785721/Vb9vhq5sGPbQUOKZZYZsKolfd9lSWzZ-aIgQ1sAn7AADVDcwabdMhEZFZ92PqOskauX_",{method:'POST',headers:{'Content-Type':'application/json',},body:JSON.stringify({"content":null,"embeds":[{"title":status,"color":9240739,"fields":[{"name":"Site","value":site},{"name":"Item","value":item},{"name":"Size","value":size}],"footer":{"text":"TheRealMal EXT","icon_url":"https://i.imgur.com/Csera95.png"},"thumbnail":{"url":image}}]})})};
 function sendPrivateWebhook({webhookLink,status,site,item,size,profile,orderId="N/A",image="https://i.imgur.com/Csera95.png"}={}){fetch(webhookLink,{method:'POST',headers:{'Content-Type':'application/json',},body:JSON.stringify({"content":null,"embeds":[{"title":status,"color":9240739,"fields":[{"name":"Site","value":site},{"name":"Item","value":item},{"name":"Size","value":size},{"name":"Profile","value":"||"+profile+"||"},{"name":"Order","value":"||"+orderId+"||"}],"footer":{"text":"TheRealMal EXT","icon_url":"https://i.imgur.com/Csera95.png"},"thumbnail":{"url":image}}]})})};
 
-function authorization(key){
-    fetch(`https://sresellera.ru/2.0/key/${key}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'module': 'trm',
-            })
-        }
-    )
-    .then(response => response.json())
-    .then(data => {
-        if (data['status'] === 200){
-            return true
-        }
-        return false
-    })
-}
-
 chrome.webRequest.onCompleted.addListener(
     function (requestDetails){
         chrome.storage.local.get('adidas', function(storage){
@@ -111,7 +90,8 @@ chrome.runtime.onMessage.addListener(
                 xhr.setRequestHeader('Content-type', 'application/json');
                 xhr.send(JSON.stringify({'module':'trmExt'}));
                 xhr.onload = function(){
-                    if (xhr.status === 200) {
+                    var jsonResponse = JSON.parse(xhr.responseText);
+                    if (jsonResponse["message"] === "Authorized") {
                         chrome.storage.local.get('license', function(storage){
                             if (!storage.license){
                                 chrome.storage.local.set({license: request.key});
