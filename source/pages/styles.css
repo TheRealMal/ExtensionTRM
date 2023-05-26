@@ -81,11 +81,12 @@ label {
     font-size: 26px;
     font-weight: bold;
 }
+
 .headerButttons {
     color: white;
     padding: 0 20px 1px 20px;
     margin: 0 8px 0 8px;
-    font-family: Segoe UI;
+    font-family: 'Segoe UI';
     font-weight: 600;
     font-size: 20px;
     text-decoration: none;

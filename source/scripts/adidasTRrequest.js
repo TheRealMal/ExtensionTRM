@@ -72,18 +72,30 @@ chrome.storage.local.get(null, function(storage){
             "cardYear": "20" + storage.profiles[storage.adidas.profile.tr]["cardDate"].split("/")[1]
         };
         let atcURI = `https://${siteHostname}/api/checkout/baskets/-/items${sitepath}`;
+        let atcProducts = [{
+            "productId":`${productID}_${storage.adidas.size.var}`,
+            "product_id":productID,
+            "product_variation_sku":`${productID}_${storage.adidas.size.var}`,
+            "quantity":1,
+            "specialLaunchProduct":storage.adidas.isSpecial
+        }]
+        for (let tmp_productID of window.location.hash.substring(1).split("-")){
+            if (tmp_productID != ""){
+                atcProducts.push({
+                    "productId":`${tmp_productID}_${storage.adidas.size.var}`,
+                    "product_id":tmp_productID,
+                    "product_variation_sku":`${tmp_productID}_${storage.adidas.size.var}`,
+                    "quantity":1,
+                    "specialLaunchProduct":storage.adidas.isSpecial
+                })
+            }
+        }
         fetch(atcURI, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify([{
-                "productId":`${productID}_${storage.adidas.size.var}`,
-                "product_id":productID,
-                "product_variation_sku":`${productID}_${storage.adidas.size.var}`,
-                "quantity":1,
-                "specialLaunchProduct":storage.adidas.isSpecial
-            }]),
+            body: JSON.stringify(atcProducts),
             mode: 'cors',
             credentials: 'include'
         }).then(function (response){
@@ -100,58 +112,63 @@ chrome.storage.local.get(null, function(storage){
                                     const response = await fetch(`https://${siteHostname}/api/chk/baskets/${r["basketId"]}/shipping_methods${sitepath}`);
                                     const authToken = response.headers.get('authorization');
                                     const shippings = await response.json();
+                                    var patchDetails = {
+                                        "customer": {
+                                            "email": profile["email"],
+                                            "receiveSmsUpdates": false
+                                        },
+                                        "shippingAddress": {
+                                            "type": "HOME",
+                                            "firstName": profile["firstName"],
+                                            "lastName": profile["lastName"],
+                                            "phoneNumber": profile["phone"],
+                                            "city": profile["city"],
+                                            "stateCode": profile["state"],
+                                            "countyProvince": profile["state"],
+                                            "zipcode": profile["zip"],
+                                            "country": "TR",
+                                            "etag": "2021-08-17T06:46:11Z",
+                                            "address1": profile["address1"],
+                                            "address2": profile["address2"],
+                                            "emailAddress": profile["email"]
+                                        },
+                                        "billingAddress": {
+                                            "type": "HOME",
+                                            "firstName": profile["firstName"],
+                                            "lastName": profile["lastName"],
+                                            "phoneNumber": profile["phone"],
+                                            "city": profile["city"],
+                                            "stateCode": profile["state"],
+                                            "countyProvince": profile["state"],
+                                            "zipcode": profile["zip"],
+                                            "country": "TR",
+                                            "etag": "2021-08-17T06:46:11Z",
+                                            "address1": profile["address1"],
+                                            "address2": profile["address2"],
+                                            "emailAddress": profile["email"],
+                                            "documentValue": profile["passport"],
+                                            "documentTypeId": "Individual"
+                                        },
+                                        "newsletterSubscription": true,
+                                        "consentVersion": "ADI_VER_20200921_TR_EN",
+                                        "methodList": [{
+                                            "id": shippings[0]["id"],
+                                            "shipmentId": shippings[0]["shipmentId"],
+                                            "carrierServiceCode": shippings[0]["carrierServiceCode"],
+                                        }]
+                                    };
+                                    if (typeof(shippings[0]["carrierCode"]) !== undefined)
+                                        patchDetails["methodList"][0]["carrierCode"] = shippings[0]["carrierCode"];
+                                    if (typeof(shippings[0]["shipNode"]) !== undefined)
+                                        patchDetails["methodList"][0]["shipNode"] = shippings[0]["shipNode"];
+                                    if (typeof(shippings[0]["collection"]) !== undefined)
+                                        patchDetails["methodList"][0]["collectionPeriod"] = `${new Date(shippings[0]["collection"]["from"]).toISOString()},${new Date(shippings[0]["collection"]["to"]).toISOString()}`;
+                                    if (typeof(shippings[0]["delivery"]) !== undefined)
+                                        patchDetails["methodList"][0]["deliveryPeriod"] = `${new Date(shippings[0]["delivery"]["from"]).toISOString()},${new Date(shippings[0]["delivery"]["to"]).toISOString()}`;
                                     await sendNotification(`Posting shipping details`);
                                     await fetch(`https://${siteHostname}/api/chk/baskets/${r["basketId"]}${sitepath}`, {
                                         method: 'PATCH',
-                                        body: JSON.stringify({
-                                            "customer": {
-                                                "email": profile["email"],
-                                                "receiveSmsUpdates": false
-                                            },
-                                            "shippingAddress": {
-                                                "type": "HOME",
-                                                "firstName": profile["firstName"],
-                                                "lastName": profile["lastName"],
-                                                "phoneNumber": profile["phone"],
-                                                "city": profile["city"],
-                                                "stateCode": profile["state"],
-                                                "countyProvince": profile["state"],
-                                                "zipcode": profile["zip"],
-                                                "country": "TR",
-                                                "etag": "2021-08-17T06:46:11Z",
-                                                "address1": profile["address1"],
-                                                "address2": profile["address2"],
-                                                "emailAddress": profile["email"]
-                                            },
-                                            "billingAddress": {
-                                                "type": "HOME",
-                                                "firstName": profile["firstName"],
-                                                "lastName": profile["lastName"],
-                                                "phoneNumber": profile["phone"],
-                                                "city": profile["city"],
-                                                "stateCode": profile["state"],
-                                                "countyProvince": profile["state"],
-                                                "zipcode": profile["zip"],
-                                                "country": "TR",
-                                                "etag": "2021-08-17T06:46:11Z",
-                                                "address1": profile["address1"],
-                                                "address2": profile["address2"],
-                                                "emailAddress": profile["email"],
-                                                "documentValue": profile["passport"],
-                                                "documentTypeId": "Individual"
-                                            },
-                                            "newsletterSubscription": true,
-                                            "consentVersion": "ADI_VER_20200921_TR_EN",
-                                            "methodList": [{
-                                                "id": shippings[0]["id"],
-                                                "shipmentId": shippings[0]["shipmentId"],
-                                                "carrierCode": shippings[0]["carrierCode"],
-                                                "carrierServiceCode": shippings[0]["carrierServiceCode"],
-                                                "shipNode": shippings[0]["shipNode"],
-                                                "collectionPeriod": `${new Date(shippings[0]["collection"]["from"]).toISOString()},${new Date(shippings[0]["collection"]["to"]).toISOString()}`,
-                                                "deliveryPeriod": `${new Date(shippings[0]["delivery"]["from"]).toISOString()},${new Date(shippings[0]["delivery"]["to"]).toISOString()}`
-                                            }]
-                                        }),
+                                        body: JSON.stringify(),
                                         headers: {
                                             'checkout-authorization': authToken,
                                             'content-type': 'application/json'

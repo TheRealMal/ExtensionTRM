@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function(){
         let profileName = this.value;
         if (profileName !== "Create new profile") {
             document.querySelector("#removeProfile").style.display = "block";
+            document.querySelector("#duplicateProfile").style.display = "block";
             $("#profileSave").text("Save");
             chrome.storage.local.get('profiles', function(storage){
                 $('#profileName').val(profileName);
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function(){
             });
         } else {
             document.querySelector("#removeProfile").style.display = "none";
+            document.querySelector("#duplicateProfile").style.display = "none";
             $("#profileSave").text("Create");
             $("#profilesBox :input").each(function (){
                 $(this).val("");
@@ -37,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 $("#profileSave").text("Create");
             }
         } else {
+        
         }
     })
     document.querySelector("#profileSave").addEventListener("click", function(){
@@ -73,6 +76,43 @@ document.addEventListener("DOMContentLoaded", function(){
                 })
             }
         });
+    })
+    document.querySelector("#duplicateProfile").addEventListener("click", function(){
+        chrome.storage.local.get('profiles', function(storage){
+            let duplicateProfileName = $('#profileName').val()
+            let i = 0
+            while (Object.keys(storage.profiles).includes(duplicateProfileName)){
+                i += 1
+                duplicateProfileName = `${$('#profileName').val()}_${i}`
+            }
+
+            storage.profiles[duplicateProfileName] = {
+                'name': $('#name').val(),
+                'country': $('#country').val(),
+                'state': $('#state').val(),
+                'city': $('#city').val(),
+                'address1': $('#address1').val(),
+                'address2': $('#address2').val(),
+                'zip': $('#zip').val(),
+                'phone': $('#phone').val(),
+                'email': $('#email').val(),
+                'cardNumber': $('#cardNumber').val(),
+                'cardDate': $('#cardDate').val(),
+                'cardCVC': $('#cardCVC').val(),
+                'extra': $('#extra').val()
+            }
+            chrome.storage.local.set({'profiles': storage.profiles}, function(){});
+            dropdownProfiles = [];
+            $('#profileDropdown option').each(function() {
+                dropdownProfiles.push($(this).val())
+            });
+            if (!dropdownProfiles.includes(duplicateProfileName)){
+                $("#profileDropdown").append(new Option(duplicateProfileName, duplicateProfileName));
+            };
+            $("#profilesBox :input").each(function (){
+                $(this).val("");
+            })
+        })
     })
     document.querySelector("#removeProfile").addEventListener("click", function(){
         chrome.storage.local.get('profiles', function(storage){

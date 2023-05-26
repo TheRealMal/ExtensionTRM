@@ -48,36 +48,18 @@ document.addEventListener("DOMContentLoaded", function(){
             let opt = document.createElement('option');
             opt.value = profile;
             opt.innerHTML = profile;
-            document.querySelector('select#adidasProfileRU').appendChild(opt);
-            opt = document.createElement('option');
-            opt.value = profile;
-            opt.innerHTML = profile;
-            document.querySelector('select#adidasProfileTR').appendChild(opt);
-            opt = document.createElement('option');
-            opt.value = profile;
-            opt.innerHTML = profile;
-            document.querySelector('select#adidasProfileTH').appendChild(opt);
-            opt = document.createElement('option');
-            opt.value = profile;
-            opt.innerHTML = profile;
-            document.querySelector('select#km20Profile').appendChild(opt);
-            opt = document.createElement('option');
-            opt.value = profile;
-            opt.innerHTML = profile;
-            document.querySelector('select#streetbeatProfile').appendChild(opt);
+            document.querySelector('select#adidasProfile').appendChild(opt);
         }
     });
     let adidasOpt = {};
     chrome.storage.local.get('adidas', function(storage){
         document.querySelector('input#adidasSwitch').checked = storage.adidas.status;
         document.querySelector('select#adidasSizes').value = storage.adidas.size.UK;
-        document.querySelector('select#adidasProfileRU').value = storage.adidas.profile["ru"];
-        document.querySelector('select#adidasProfileTR').value = storage.adidas.profile["tr"];
-        document.querySelector('select#adidasProfileTH').value = storage.adidas.profile["th"];
         document.querySelector('input#adidasATCcheckbox').checked = storage.adidas.atc;
         document.querySelector('input#adidasACOcheckbox').checked = storage.adidas.aco;
         document.querySelector('input#adidasAFcheckbox').checked = storage.adidas.af;
         document.querySelector('input#adidasSPcheckbox').checked = storage.adidas.isSpecial;
+        document.querySelector('input#adidasRQcheckbox').checked = storage.adidas.requests;
         adidasOpt = storage.adidas;
     });
     document.querySelector("input#adidasSwitch").addEventListener('change', function(){
@@ -89,27 +71,20 @@ document.addEventListener("DOMContentLoaded", function(){
         adidasOpt.size.UK = this.value, adidasOpt.size.var = adidasSizesTab[this.value];
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-    document.querySelector("select#adidasProfileRU").addEventListener('change', function(){
+
+
+    document.querySelector("select#adidasRegion").addEventListener('change', function(){
+        document.querySelector("select#adidasProfile").value = adidasOpt.profile[this.value]
+    });
+    document.querySelector("select#adidasProfile").addEventListener('change', function(){
         if (typeof adidasOpt.profile !== "object"){
             adidasOpt.profile = {};
         }
-        adidasOpt.profile.ru = this.value;
+        adidasOpt.profile[document.querySelector("select#adidasRegion").value] = this.value;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
-    document.querySelector("select#adidasProfileTR").addEventListener('change', function(){
-        if (typeof adidasOpt.profile !== "object"){
-            adidasOpt.profile = {};
-        }
-        adidasOpt.profile.tr = this.value;
-        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
-    });
-    document.querySelector("select#adidasProfileTH").addEventListener('change', function(){
-        if (typeof adidasOpt.profile !== "object"){
-            adidasOpt.profile = {};
-        }
-        adidasOpt.profile.th = this.value;
-        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
-    });
+
+
     document.querySelector("input#adidasATCcheckbox").addEventListener('change', function(){
         adidasOpt.atc = this.checked;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
@@ -124,6 +99,10 @@ document.addEventListener("DOMContentLoaded", function(){
     });
     document.querySelector("input#adidasSPcheckbox").addEventListener('change', function(){
         adidasOpt.isSpecial = this.checked;
+        chrome.storage.local.set({'adidas': adidasOpt}, function(){});
+    });
+    document.querySelector("input#adidasRQcheckbox").addEventListener('change', function(){
+        adidasOpt.requests = this.checked;
         chrome.storage.local.set({'adidas': adidasOpt}, function(){});
     });
     
@@ -159,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function(){
     chrome.storage.local.get('streetbeat', function(storage){
         document.querySelector('input#streetbeatSwitch').checked = storage.streetbeat.status;
         document.querySelector('select#streetbeatProfile').value = storage.streetbeat.profile;
+        document.querySelector('select#streetbeatSize').value = storage.streetbeat.size;
         document.querySelector('input#streetbeatACOLoopcheckbox').checked = storage.streetbeat.aco_loop;
         document.querySelector('input#streetbeatACOcheckbox').checked = storage.streetbeat.aco;
         streetbeatOpt = storage.streetbeat;
@@ -174,6 +154,13 @@ document.addEventListener("DOMContentLoaded", function(){
         streetbeatOpt.profile = this.value;
         chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
     });
+    document.querySelector("select#streetbeatSize").addEventListener('change', function(){
+        if (typeof streetbeatOpt.size !== "object"){
+            streetbeatOpt.size = {};
+        }
+        streetbeatOpt.size = this.value;
+        chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
+    });
     document.querySelector("input#streetbeatACOLoopcheckbox").addEventListener('change', function(){
         streetbeatOpt.aco_loop = this.checked;
         chrome.storage.local.set({'streetbeat': streetbeatOpt}, function(){});
@@ -184,6 +171,24 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
 
+    let nftOpt = {};
+    chrome.storage.local.get('nft', function(storage){
+        document.querySelector('input#solportSwitch').checked = storage.nft.solport.status;
+        document.querySelector('input#solportSpam').checked = storage.nft.solport.spam;
+        nftOpt = storage.nft;
+    });
+    document.querySelector("input#solportSwitch").addEventListener('change', function(){
+        if (typeof nftOpt.solport !== "object"){
+            nftOpt.solport = {};
+        }
+        nftOpt.solport.status = this.checked;
+        chrome.storage.local.set({'nft': nftOpt}, function(){});
+    });
+    document.querySelector("input#solportSpam").addEventListener('change', function(){
+        nftOpt.solport.spam = this.checked;
+        chrome.storage.local.set({'nft': nftOpt}, function(){});
+    });
+
     document.querySelector("button#adidasAddToCart").addEventListener('click', function(){
         chrome.runtime.sendMessage({message: "adidasAddToCart"}, function(response){});
     });
@@ -193,5 +198,24 @@ document.addEventListener("DOMContentLoaded", function(){
                 window.location.href = "/pages/auth/auth.html";
             }
         });
-    })
+    });
+    
+    document.querySelector(".spaceSwitch > label > input").addEventListener('change', function(){
+        if (document.querySelector("div.siteBox").style.display !== "none"){
+            for (el of document.querySelectorAll("div.siteBox")){
+                el.style.display = "none";
+            };
+            for (el of document.querySelectorAll("div.nftBox")){
+                el.style.display = "table";
+            };
+        }
+        else {
+            for (el of document.querySelectorAll("div.nftBox")){
+                el.style.display = "none";
+            };
+            for (el of document.querySelectorAll("div.siteBox")){
+                el.style.display = "table";
+            };
+        }
+    });
 });

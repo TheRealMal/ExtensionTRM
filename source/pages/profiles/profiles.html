@@ -12,18 +12,15 @@
         #removeProfile {
             display: none;
         }
+        #duplicateProfile {
+            display: none;
+        }
         .profileLabel {
             font-size: 15px;
         }
         #profileDropdown {
             display: table;
             margin: 0 auto;
-        }
-        input#cardDate {
-            width: 50px;
-        }
-        input#cardCVC {
-            width: 50px;
         }
         #profilesBox {
             margin-left: 10px;
@@ -32,6 +29,32 @@
         .trmCustomButton {
             width: 120px;
         }
+        .duplicateButton {
+            display: block;
+            z-index: 1;
+            position: absolute;
+            top: 55px;
+            left: 35px;
+            height: 25px;
+            width: 70px;
+            text-align: center;
+            color: white;
+            background-color: rgb(13, 123, 187);
+            border: 1.5px solid rgba(111, 0, 130, 0);
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+        .duplicateButton:hover {
+            outline: 0;
+            background-color: rgb(11, 11, 11, 0);
+            border: 1.5px solid rgb(13, 123, 187);
+            cursor: pointer;
+        }
+        .duplicateButton:focus {
+            outline: 0;
+            background-color: rgb(13, 123, 187);
+        }
+
         .deleteButton {
             display: block;
             z-index: 1;
@@ -57,6 +80,26 @@
             outline: 0;
             background-color: rgb(130, 0, 0);
         }
+        .customInput {
+            width: 94%;
+        }
+        .flex-container {
+            margin-top: 10px;
+            display: flex;
+        }
+        .inputBox#cardDateBox {
+            flex: 1;
+        }
+        .inputBox#cardCVCBox {
+            flex: 1;
+            margin-right: 200px;
+        }
+        input#cardCVC {
+            width: 65px;
+        }
+        input#cardDate {
+            width: 65px;
+        }
     </style>
 </head>
 <body>
@@ -68,8 +111,9 @@
     <div id="body">
         <div id="profilesBox">
             <select id="profileDropdown" class="trmFormSelect">
-                <option selected>Create new profile</option>
+                <option selected value="Create new profile">Create new profile</option>
             </select>
+            <button class="duplicateButton" id="duplicateProfile">Duplicate</button>
             <button class="deleteButton" id="removeProfile">Delete</button>
             <br><div class="inputBox">
                 <label for="profileName" class="profileLabel">Profile Name</label>
@@ -115,13 +159,15 @@
                 <label for="cardNumber" class="profileLabel">Card Number</label>
                 <br><input id="cardNumber" type="tel" placeholder="4321 1234 4321 1234" pattern="\d*" class="customInput">
             </div>
-            <br><div class="inputBox">
-                <label for="cardDate" class="profileLabel">Card Date</label>
-                <br><input id="cardDate" placeholder="01/23" class="customInput">
-            </div>
-            <br><div class="inputBox">
-                <label for="cardCVC" class="profileLabel">CVC</label>
-                <br><input id="cardCVC" placeholder="000" class="customInput">
+            <div class="flex-container">
+                <br><div class="inputBox" id="cardDateBox">
+                    <label for="cardDate" class="profileLabel">Card Date</label>
+                    <br><input id="cardDate" placeholder="01/23" class="customInput">
+                </div>
+                <br><div class="inputBox" id="cardCVCBox">
+                    <label for="cardCVC" class="profileLabel">CVC</label>
+                    <br><input id="cardCVC" placeholder="000" class="customInput">
+                </div>
             </div>
             <br><div class="inputBox">
                 <label for="extra" class="profileLabel">Extra Field</label>

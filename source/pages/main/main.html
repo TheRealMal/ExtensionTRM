@@ -30,7 +30,12 @@
             display: table;
             float: right;
         }
-        #adidasProfileTRBox {
+        #adidasAddToCartButtonBlock {
+            position: fixed;
+            right: 22px;
+            top: 210px;
+        }
+        #adidasProfileBox {
             margin-top: 10px;
         }
         #adidasProfileTHBox {
@@ -74,11 +79,88 @@
             margin-top: 8px;
             margin-left: 10px;
         }
-        
-        .trmCustomButton{
+        #streetbeatProfile {
+            width: 180px;
+        }
+        #streetbeatSize {
+            width: 180px;
+            margin-right: 10px;
+        }
+        .trmCustomButton {
             width: 175px;
             margin: 10px 0px 0px 5px;
-        }  
+        }
+        #solportSpamBlock {
+            margin-top: 8px;
+        }
+    </style>
+    <style>
+        .toggle {
+            --width: 200px;
+            --height: 20px;
+            left: 50%;
+            transform: translate(-50%);
+            position: relative;
+            display: inline-block;
+            width: var(--width);
+            height: var(--height);
+            cursor: pointer;
+        }
+    
+        .toggle input {
+             display: none;
+        }
+    
+        .toggle .labels {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 13px;
+            font-family: sans-serif;
+            transition: all 0.4s ease-in-out;
+            overflow: hidden;
+        }
+    
+        .toggle .labels::after {
+            content: attr(data-off);
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            color: #ffffff;
+            background-color: rgb(110, 0, 130);
+            transition: all 0.4s ease-in-out;
+        }
+    
+        .toggle .labels::before {
+            content: attr(data-on);
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0;
+            left: calc(var(--width) * -1);
+            height: 100%;
+            width: 100%;
+            color: #000000;
+            background-color: rgb(255, 255, 255);
+            text-align: center;
+            transition: all 0.4s ease-in-out;
+        }
+    
+        .toggle input:checked~.labels::after {
+            transform: translateX(var(--width));
+        }
+    
+        .toggle input:checked~.labels::before {
+            transform: translateX(var(--width));
+        }
     </style>
     <script src="../shared.js"></script>
 </head>
@@ -89,6 +171,24 @@
         <a href="../profiles/profiles.html" class="headerButttons">Profiles</a>
     </div>
     <div id="body">
+        <div class="spaceSwitch">
+            <label class="toggle">
+                <input type="checkbox">
+                <span class="labels" data-on="NFT" data-off="SNEAKERS"></span>
+            </label>
+        </div>
+        <div class="nftBox" id="solport" style="display: none;">
+            <div class="siteHead">
+                <input type="checkbox" class="switch" id="solportSwitch"/><label class="switchLabel" for="solportSwitch">Toggle</label>
+                <label class="siteName" id="solport">Solport</label>
+                <hr style="display:inline-block; margin-left:10px; width:230px; margin-bottom: 9px;">
+            </div>
+            <div class="checkboxBlock" id="solportSpamBlock">
+                <label class="form-control">
+                    <input type="checkbox" class="checkboxTRM" id="solportSpam"/><label class="checkboxLabel" for="solportSpam">Spam</label>
+                </label>
+            </div>
+        </div>
         <div class="siteBox" id="adidas">
             <div class="siteHead">
                 <input type="checkbox" class="switch" id="adidasSwitch"/><label class="switchLabel" for="adidasSwitch">Toggle</label>
@@ -144,21 +244,19 @@
                     <option value="3 UK">3 UK</option>
                 </select>
                 <div id="adidasProfilesBox">
-                    <div id="adidasProfileRUBox">
-                        <span style="color: white;">RU</span><br>
-                        <select id="adidasProfileRU" class="trmFormSelect">
-                            <option disabled selected>Choose profile</option>
+                    <div id="adidasRegionBox">
+                        <span style="color: white;">REGION</span><br>
+                        <select id="adidasRegion" class="trmFormSelect">
+                            <option disabled selected>Choose region</option>
+                            <option value="ru">Russia</option>
+                            <option value="tr">Turkey</option>
+                            <option value="th">Thailand</option>
+                            <option value="pl">Poland</option>
                         </select>
                     </div>
-                    <div id="adidasProfileTRBox">
-                        <span style="color: white;">TR</span><br>
-                        <select id="adidasProfileTR" class="trmFormSelect">
-                            <option disabled selected>Choose profile</option>
-                        </select>
-                    </div>
-                    <div id="adidasProfileTHBox">
-                        <span style="color: white;">TH</span><br>
-                        <select id="adidasProfileTH" class="trmFormSelect">
+                    <div id="adidasProfileBox">
+                        <span style="color: white;">PROFILE</span><br>
+                        <select id="adidasProfile" class="trmFormSelect">
                             <option disabled selected>Choose profile</option>
                         </select>
                     </div>
@@ -171,7 +269,7 @@
                     </div>
                     <div class="checkboxBlock">
                         <label class="form-control">
-                            <input type="checkbox" class="checkboxTRM" id="adidasACOcheckbox"/><label class="checkboxLabel" for="adidasACOcheckbox">Autocheckout</label>
+                            <input type="checkbox" class="checkboxTRM" id="adidasSPcheckbox"/><label class="checkboxLabel" for="adidasSPcheckbox">Special product</label>
                         </label>
                     </div>
                     <div class="checkboxBlock">
@@ -181,10 +279,15 @@
                     </div>
                     <div class="checkboxBlock">
                         <label class="form-control">
-                            <input type="checkbox" class="checkboxTRM" id="adidasSPcheckbox"/><label class="checkboxLabel" for="adidasSPcheckbox">Special product</label>
+                            <input type="checkbox" class="checkboxTRM" id="adidasACOcheckbox"/><label class="checkboxLabel" for="adidasACOcheckbox">Autocheckout</label>
                         </label>
                     </div>
-                    <div class="buttonBlock">
+                    <div class="checkboxBlock">
+                        <label class="form-control">
+                            <input type="checkbox" class="checkboxTRM" id="adidasRQcheckbox"/><label class="checkboxLabel" for="adidasRQcheckbox">Requests</label>
+                        </label>
+                    </div>
+                    <div class="buttonBlock" id="adidasAddToCartButtonBlock">
                         <button class="trmButton trmCustomButton" id="adidasAddToCart">Force ATC</button>
                     </div>
                 </div>
@@ -228,6 +331,36 @@
                     <span style="color: white;">PROFILE</span><br>
                     <select id="streetbeatProfile" class="trmFormSelect">
                         <option disabled selected>Choose profile</option>
+                    </select>
+                </div>
+                <div id="streetbeatSizeBox">
+                    <span style="color: white;">SIZE</span><br>
+                    <select id="streetbeatSize" class="trmFormSelect">
+                        <option disabled selected>Choose size</option>
+                        <option value="smallest">Smallest</option>
+                        <option value="largest">Largest</option>
+                        <option value="random">Random</option>
+                        <option value="3.5">3.5 US</option>
+                        <option value="4">4 US</option>
+                        <option value="4.5">4.5 US</option>
+                        <option value="5">5 US</option>
+                        <option value="5.5">5.5 US</option>
+                        <option value="6">6 US</option>
+                        <option value="6.5">6.5 US</option>
+                        <option value="7">7 US</option>
+                        <option value="7.5">7.5 US</option>
+                        <option value="8">8 US</option>
+                        <option value="8.5">8.5 US</option>
+                        <option value="9">9 US</option>
+                        <option value="9.5">9.5 US</option>
+                        <option value="10">10 US</option>
+                        <option value="10.5">10.5 US</option>
+                        <option value="11">11 US</option>
+                        <option value="11.5">11.5 US</option>
+                        <option value="12">12 US</option>
+                        <option value="12.5">12.5 US</option>
+                        <option value="13">13 US</option>
+                        <option value="13.5">13.5 US</option>
                     </select>
                 </div>
                 <div id="streetbeatcheckboxBox">

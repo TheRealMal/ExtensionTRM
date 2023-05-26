@@ -314,16 +314,15 @@ if (window.location.href.includes("?url=")){
               var url = document.querySelector('input[name="sbMonitor"]').value;
               document.querySelector('div#monitor div.box-lastcheck span').innerHTML = \`Last check: \${(new Date()).toISOString()}\`
               fetch(url, {redirect: "error"})
-              .then(response => response.status)
-              .then(status => {
-                  if (status == 200){
+              .then(response => {
+                  if (response.status == 200 && !response.headers.get('server').toLowerCase().includes('variti')){
                     monitorButton.click();
                     sendShareWebhook(url);
                     window.open(url, '_blank').focus();
-                  } else if (status == 404){
+                  } else if (response.status == 404){
                     document.querySelector('input[name="sbMonitor"]').value = "Product not loaded";
                     monitorButton.click();
-                  } else if (status == 403){
+                  } else if (response.status == 403){
                     var link = new URL(window.location.href)
                     link.searchParams.set('url', url)
                     link.searchParams.set('d', document.querySelector('input[name="sbMonitorDelay"]').value)
@@ -356,7 +355,7 @@ if (window.location.href.includes("?url=")){
                   embeds: [
                     {
                       color: 2829361,
-                      title: 'Кто-то что-то поймал' + (name === '' ? '' : \`\\n\${name}\`),
+                      title: (name === '' ? '???' : \`\${name}\`),
                       description: link + (sizes === '' ? '' : \`\\n\${sizes}\`),
                       footer: {
                         text: 'SResellera • @therealmal',
@@ -382,7 +381,7 @@ if (window.location.href.includes("?url=")){
           sizes: {}
         };
         var newRestockData = {
-          name: "",
+          name: "Not loaded",
           img: "",
           sizes: {}
         };
@@ -418,17 +417,17 @@ if (window.location.href.includes("?url=")){
                   }
               }
               if (restockData["name"] != ""){
-                if (newRestockData["sizes"].length > restockData["sizes"].length){
+                if (Object.keys(newRestockData["sizes"]).length > Object.keys(restockData["sizes"]).length){
                   restockMonitorButton.click();
-                  sendShareWebhook(newRestockData["url"], Object.keys(newRestockData["sizes"]).join('US \\n'), newRestockData["name"], newRestockData["img"]);
+                  sendShareWebhook(newRestockData["url"], Object.keys(newRestockData["sizes"]).join(' US \\n') + " US", newRestockData["name"], newRestockData["img"]);
                   window.open(newRestockData["url"], '_blank').focus();
-                } else if (newRestockData["sizes"].length === restockData["sizes"].length && !newRestockData.every(function(value, index) { return value === restockData[index]})){
+                } else if (Object.keys(newRestockData["sizes"]).length === Object.keys(restockData["sizes"]).length && !newRestockData.every(function(value, index) { return value === restockData[index]})){
                   restockMonitorButton.click();
-                  sendShareWebhook(newRestockData["url"], Object.keys(newRestockData["sizes"]).join('US \\n'), newRestockData["name"], newRestockData["img"]);
+                  sendShareWebhook(newRestockData["url"], Object.keys(newRestockData["sizes"]).join(' US \\n') + " US", newRestockData["name"], newRestockData["img"]);
                   window.open(newRestockData["url"], '_blank').focus();
                 } else if (newRestockData["sizes"].filter(function(obj) { return restockData["sizes"].indexOf(obj) !== -1; }) !== newRestockData["sizes"]){
                   restockMonitorButton.click();
-                  sendShareWebhook(newRestockData["url"], Object.keys(newRestockData["sizes"]).join('US \\n'), newRestockData["name"], newRestockData["img"]);
+                  sendShareWebhook(newRestockData["url"], Object.keys(newRestockData["sizes"]).join(' US \\n') + " US", newRestockData["name"], newRestockData["img"]);
                   window.open(newRestockData["url"], '_blank').focus();
                 }
               }
