@@ -93,32 +93,41 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch (request.message){
             case "authorize":
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', `https://sresellera.ru/2.0/key/${request.key}`);
-                xhr.setRequestHeader('Content-type', 'application/json');
-                xhr.send(JSON.stringify({'module':'trmExt'}));
-                xhr.onload = function(){
-                    var jsonResponse = JSON.parse(xhr.responseText);
-                    if (jsonResponse["message"] === "Authorized") {
-                        chrome.storage.local.get('license', function(storage){
-                            if (!storage.license){
-                                chrome.storage.local.set({license: request.key});
-                                chrome.storage.local.set({adidas: {status: false, size: {UK: undefined}, profile: {ru: undefined, tr:undefined, th: undefined}, atc: false, aco: false, af: false}});
-                                chrome.storage.local.set({km20: {status: false, profile: undefined, atc: false, aco: false}});
-                                chrome.browserAction.setPopup({popup: 'pages/main/main.html'});
-                            }
-                        });
-                        sendResponse('success')
-                    } else {
-                        chrome.storage.local.get('license', function(storage){
-                            if (storage.license){
-                                chrome.storage.local.remove('license', function(){})
-                                chrome.browserAction.setPopup({popup: 'pages/auth/auth.html'});
-                            }
-                        });
-                        sendResponse('failed')
+                // let xhr = new XMLHttpRequest();
+                // xhr.open('POST', `https://sresellera.ru/2.0/key/${request.key}`);
+                // xhr.setRequestHeader('Content-type', 'application/json');
+                // xhr.send(JSON.stringify({'module':'trmExt'}));
+                // xhr.onload = function(){
+                //     var jsonResponse = JSON.parse(xhr.responseText);
+                //     if (jsonResponse["message"] === "Authorized") {
+                //         chrome.storage.local.get('license', function(storage){
+                //             if (!storage.license){
+                //                 chrome.storage.local.set({license: request.key});
+                //                 chrome.storage.local.set({adidas: {status: false, size: {UK: undefined}, profile: {ru: undefined, tr:undefined, th: undefined}, atc: false, aco: false, af: false}});
+                //                 chrome.storage.local.set({km20: {status: false, profile: undefined, atc: false, aco: false}});
+                //                 chrome.browserAction.setPopup({popup: 'pages/main/main.html'});
+                //             }
+                //         });
+                //         sendResponse('success')
+                //     } else {
+                //         chrome.storage.local.get('license', function(storage){
+                //             if (storage.license){
+                //                 chrome.storage.local.remove('license', function(){})
+                //                 chrome.browserAction.setPopup({popup: 'pages/auth/auth.html'});
+                //             }
+                //         });
+                //         sendResponse('failed')
+                //     }
+                // }
+                chrome.storage.local.get('license', function(storage){
+                    if (!storage.license){
+                        chrome.storage.local.set({license: request.key});
+                        chrome.storage.local.set({adidas: {status: false, size: {UK: undefined}, profile: {ru: undefined, tr:undefined, th: undefined}, atc: false, aco: false, af: false}});
+                        chrome.storage.local.set({km20: {status: false, profile: undefined, atc: false, aco: false}});
+                        chrome.browserAction.setPopup({popup: 'pages/main/main.html'});
                     }
-                }
+                });
+                sendResponse('success')
                 return true
                 break;
             case "adidasAddToCart":
