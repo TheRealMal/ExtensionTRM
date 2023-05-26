@@ -29,7 +29,7 @@ Browser extension to automate & speed up some basic customer actions
 3. Upload that directory to your chrome browser
 
 ## Adidas TR adyen solution
-Adyen server solution using ExpressJS
+Adyen server solution using ExpressJS  
 Old files in `/adyen`
 ```js
 ...
